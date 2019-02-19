@@ -17,17 +17,7 @@ class Answer(models.Model):
     """
     text = models.CharField(max_length=255)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-
-
-class ModelAnswers(models.Model):
-    """
-    Model stores model answers to questions by containing references
-    to questions and answers, model made initially to store possibly multiple
-    correct answers per questions in case that is needed in the future.
-    """
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
-
+    is_correct = models.BooleanField(default=False)
 
 class Test(models.Model):
     """
