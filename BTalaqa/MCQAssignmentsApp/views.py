@@ -3,7 +3,6 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-
 from MCQAssignmentsApp.forms.forms import TestForm, answer_form_set,QuestionForm,AnswerForm
 
 def create_test(request):
@@ -35,7 +34,25 @@ def create_questions_answers(request):
     :param request:
     :return:
     """
-    #formset = question_form_set
-    return render(request, 'questions-answers-creation.html'
-                  , {'question_form': QuestionForm, 'answer_form': answer_form_set})
+    #formset = questio n_form_set
+
+    if request.method == "POST":
+        question_form = QuestionForm(request.POST)
+        answer_forms = answer_form_set(request.POST)
+
+        if question_form.is_valid():
+            question = question_form.save()
+            for answer_form in answer_forms:
+                if answer_form.is_valid():
+                    answer_form = answer_form.save(commit=False)
+                    answer_form.question=question
+                    answer_form.save()
+                    #return whatever!!!
+
+
+
+    else:
+        return render(request, 'questions-answers-creation.html'
+                  , {'question_form': QuestionForm, 'answer_formset': answer_form_set})
+
 

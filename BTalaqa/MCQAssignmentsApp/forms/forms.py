@@ -44,6 +44,6 @@ class QuestionForm(ModelForm):
         }
 
 answer_form_set = formset_factory(form=AnswerForm,
-                                        extra=1,
+                                        extra=4,
                                         can_delete=True)
 
