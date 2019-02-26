@@ -1,4 +1,4 @@
-from django.forms import ModelForm,Textarea, TextInput, inlineformset_factory
+from django.forms import ModelForm,Textarea, TextInput, formset_factory
 from MCQAssignmentsApp.models import Question,Answer,Test,TestQuestions
 
 class TestForm(ModelForm):
@@ -43,5 +43,7 @@ class QuestionForm(ModelForm):
             'text': 'Question text',
         }
 
-question_form_set = inlineformset_factory(Question, Answer,
-                                            form=AnswerForm, extra=1,can_delete=False,can_order=True)
+answer_form_set = formset_factory(form=AnswerForm,
+                                        extra=1,
+                                        can_delete=True)
+

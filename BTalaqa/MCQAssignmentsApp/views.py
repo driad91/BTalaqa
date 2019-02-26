@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from MCQAssignmentsApp.forms.forms import TestForm, question_form_set,QuestionForm,AnswerForm
+from MCQAssignmentsApp.forms.forms import TestForm, answer_form_set,QuestionForm,AnswerForm
 
 def create_test(request):
     # if this is a POST request we need to process the form data
@@ -37,5 +37,5 @@ def create_questions_answers(request):
     """
     #formset = question_form_set
     return render(request, 'questions-answers-creation.html'
-                  , {'question_form': QuestionForm, 'answer_form': AnswerForm})
+                  , {'question_form': QuestionForm, 'answer_form': answer_form_set})
 
