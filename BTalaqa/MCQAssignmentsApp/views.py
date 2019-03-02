@@ -56,3 +56,5 @@ def create_questions_answers(request):
                   , {'question_form': QuestionForm, 'answer_formset': answer_form_set})
 
 
+def home (request):
+    return render(request,'home.html')
