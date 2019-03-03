@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from MCQAssignmentsApp.forms.forms import TestForm, answer_form_set,QuestionForm,AnswerForm
+from TeachersApp.forms.forms import TestForm, answer_form_set,QuestionForm,AnswerForm
 from django.contrib.auth.decorators import login_required
 
 
@@ -27,7 +27,7 @@ def create_test(request):
     else:
         form = TestForm()
 
-    return render(request, 'test-creation.html', {'form': form})
+    return render(request, 'teachers/test-creation.html', {'form': form})
 
 @login_required
 def create_questions_answers(request):
@@ -54,9 +54,9 @@ def create_questions_answers(request):
 
 
     else:
-        return render(request, 'questions-answers-creation.html'
+        return render(request, 'teachers/questions-answers-creation.html'
                   , {'question_form': QuestionForm, 'answer_formset': answer_form_set})
 
 @login_required
 def home (request):
-    return render(request,'home.html')
+    return render(request, 'teachers/home.html')
