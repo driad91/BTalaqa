@@ -124,6 +124,6 @@ STATICFILES_DIRS = [
     "/TeachersApp/static"
 ]
 
-LOGIN_REDIRECT_URL ='home'
+LOGIN_REDIRECT_URL ='distribute'
 LOGOUT_REDIRECT_URL ='login'
 LOGIN_URL = 'login'
