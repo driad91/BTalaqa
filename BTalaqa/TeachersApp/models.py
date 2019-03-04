@@ -3,21 +3,7 @@ from django.db import models
 # Create your models here.
 
 
-class Question(models.Model):
-    """
-    Model stores MCQ Questions
-    """
-    text = models.CharField(max_length=255)
-    exclusive_answer = models.BooleanField(default=True)
 
-
-class Answer(models.Model):
-    """
-    Model stores MCQ Answers to be displayed per question
-    """
-    text = models.CharField(max_length=255)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    is_correct = models.BooleanField(default=False)
 
 class Test(models.Model):
     """
@@ -27,16 +13,21 @@ class Test(models.Model):
     """
     name = models.CharField(max_length=255)
 
+class Question(models.Model):
+    """
+    Model stores MCQ Questions
+    """
+    text = models.CharField(max_length=255)
+    exclusive_answer = models.BooleanField(default=True)
+    test = models.ManyToManyField(Test)
 
-class TestQuestions(models.Model):
+class Answer(models.Model):
     """
-    Model stores the references to each test and the questions it contains
+    Model stores MCQ Answers to be displayed per question
     """
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    text = models.CharField(max_length=255)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-
-
-
+    is_correct = models.BooleanField(default=False)
 
 
 

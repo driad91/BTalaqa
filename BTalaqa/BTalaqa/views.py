@@ -22,9 +22,9 @@ def check_user_distribute(request):
     except Exception as E:
         group_name = ''
 
-    if group_name == "Student":
+    if group_name == "Students":
         return HttpResponseRedirect(reverse('StudentsApp:home'))
-    elif group_name == "Teacher":
+    elif group_name == "Teachers":
         return HttpResponseRedirect(reverse('TeachersApp:home'))
     else:
         return HttpResponseRedirect(reverse('StudentsApp:home'))

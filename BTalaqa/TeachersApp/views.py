@@ -2,8 +2,9 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render,reverse, redirect
 from TeachersApp.forms.forms import TestForm, answer_form_set,QuestionForm,AnswerForm
+from TeachersApp.models import Test,Question
 from django.contrib.auth.decorators import login_required
 
 
@@ -20,8 +21,7 @@ def create_test(request):
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
-            print(test_object.id)
-            return HttpResponseRedirect('create_questions_answers/')
+            return redirect('TeachersApp:create_question_answers',pk= test_object.id)
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -30,33 +30,47 @@ def create_test(request):
     return render(request, 'teachers/test-creation.html', {'form': form})
 
 @login_required
-def create_questions_answers(request):
+def create_questions_answers(request, pk):
     """
 
     :param request:
     :return:
     """
-    #formset = questio n_form_set
+    #formset = question_form_set
 
     if request.method == "POST":
         question_form = QuestionForm(request.POST)
         answer_forms = answer_form_set(request.POST)
 
         if question_form.is_valid():
+            valid = True
             question = question_form.save()
+            print("HERE QUESTION")
+            print(question.pk)
             for answer_form in answer_forms:
                 if answer_form.is_valid():
+                    print('valid')
                     answer_form = answer_form.save(commit=False)
-                    answer_form.question=question
+                    answer_form.question = question
                     answer_form.save()
-                    #return whatever!!!
-
+                    test_current = Test.objects.get(pk=pk)
+                    question.test.add(test_current)
+                else:
+                    valid = False
+            if valid:
+                print('VALID!!!')
+                print(pk)
+                return redirect('TeachersApp:create_question_answers',
+                                pk=pk)
 
 
     else:
+        print(pk)
         print("HERE!")
+        test = Test.objects.get(pk=pk)
         return render(request, 'teachers/questions-answers-creation.html'
-                  , {'question_form': QuestionForm, 'answer_formset': answer_form_set})
+                  , {'question_form': QuestionForm, 'answer_formset': answer_form_set,
+                     'test': test})
 
 @login_required
 def home (request):
