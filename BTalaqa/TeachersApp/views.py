@@ -21,7 +21,7 @@ def create_test(request):
             # ...
             # redirect to a new URL:
             print(test_object.id)
-            return HttpResponseRedirect('/questions_answers/')
+            return HttpResponseRedirect('create_questions_answers/')
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -54,6 +54,7 @@ def create_questions_answers(request):
 
 
     else:
+        print("HERE!")
         return render(request, 'teachers/questions-answers-creation.html'
                   , {'question_form': QuestionForm, 'answer_formset': answer_form_set})
 

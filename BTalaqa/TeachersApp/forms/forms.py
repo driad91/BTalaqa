@@ -10,7 +10,7 @@ class TestForm(ModelForm):
         model = Test
         fields = ['name']
         widgets = {
-            'name':TextInput ,
+            'name': TextInput,
         }
         max_length = Test._meta.get_field('name').max_length
         labels = {
