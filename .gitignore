@@ -1,11 +1,6 @@
-# Project specific
-ass_rules_data/
-temp_data/
+
 
 *.sqlite3
-
-smart_tp/settings.py
-
 
 # Byte-compiled / optimized / DLL files
 /__pycache__/
@@ -120,7 +115,3 @@ ENV/
 #migrations
 .migrations/
 migrations/
-MCQAssignmentsApp/migrations/
-#Project-related
-.Templates/
-Templates/
