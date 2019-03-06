@@ -23,6 +23,8 @@ urlpatterns = [
     re_path('^$', views.check_user_distribute, name='distribute'),
     re_path('^teacher/', include('TeachersApp.urls', namespace='TeachersApp')),
     re_path('^student/', include('StudentsApp.urls',   namespace='StudentsApp')),
+    re_path('^assignment/', include('AssignmentsApp.urls', namespace='AssignmentsApp')),
+
     re_path(r'^login/$',
             auth_views.LoginView.as_view(template_name='login.html'),
             name='login'),

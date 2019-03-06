@@ -49,7 +49,6 @@ def create_questions_answers(request, pk):
             print(question.pk)
             for answer_form in answer_forms:
                 if answer_form.is_valid():
-                    print('valid')
                     answer_form = answer_form.save(commit=False)
                     answer_form.question = question
                     answer_form.save()
@@ -58,15 +57,12 @@ def create_questions_answers(request, pk):
                 else:
                     valid = False
             if valid:
-                print('VALID!!!')
-                print(pk)
                 return redirect('TeachersApp:create_question_answers',
                                 pk=pk)
 
 
     else:
-        print(pk)
-        print("HERE!")
+
         test = Test.objects.get(pk=pk)
         return render(request, 'teachers/questions-answers-creation.html'
                   , {'question_form': QuestionForm, 'answer_formset': answer_form_set,

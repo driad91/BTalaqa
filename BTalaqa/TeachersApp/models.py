@@ -12,6 +12,9 @@ class Test(models.Model):
     of different already existing questions
     """
     name = models.CharField(max_length=255)
+    def __str__(self):
+        return '%s %s' % (self.id, self.name)
+
 
 class Question(models.Model):
     """
