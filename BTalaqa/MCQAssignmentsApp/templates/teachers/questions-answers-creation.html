@@ -6,7 +6,7 @@
     {% csrf_token %}
 
 <h3> Test:  {{ test.name }}</h3>
-<form action= {% url 'TeachersApp:create_question_answers' test.pk %}  method="post">
+<form action= {% url 'MCQAssignmentsApp:create_question_answers' test.pk %}  method="post">
     {% csrf_token %}
 
     {{ question_form }}

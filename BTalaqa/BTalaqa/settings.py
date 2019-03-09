@@ -37,8 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'TeachersApp',
-    'StudentsApp',
+    'MCQAssignmentsApp',
     'AssignmentsApp'
 ]
 
@@ -57,7 +56,7 @@ ROOT_URLCONF = 'BTalaqa.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['TeachersApp/templates', 'BTalaqa/templates',
+        'DIRS': ['MCQAssignmentsApp/templates', 'BTalaqa/templates',
                  'StudentsApp/templates', 'AssignmentsApp/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -121,9 +120,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    "/TeachersApp/static"
+    "/MCQAssignmentsApp/static"
 ]
 
-LOGIN_REDIRECT_URL ='distribute'
+LOGIN_REDIRECT_URL ='home'
 LOGOUT_REDIRECT_URL ='login'
 LOGIN_URL = 'login'

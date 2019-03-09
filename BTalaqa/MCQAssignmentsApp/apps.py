@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class McqassignmentsappConfig(AppConfig):
-    name = 'TeachersApp'
+    name = 'MCQAssignmentsApp'

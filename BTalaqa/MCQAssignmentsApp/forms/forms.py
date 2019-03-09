@@ -1,5 +1,5 @@
 from django.forms import ModelForm,Textarea, TextInput, formset_factory
-from TeachersApp.models import Question,Answer,Test
+from MCQAssignmentsApp.models import Question,Answer,Test
 
 class TestForm(ModelForm):
 

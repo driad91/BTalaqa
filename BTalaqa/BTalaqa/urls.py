@@ -20,14 +20,16 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path('^$', views.check_user_distribute, name='distribute'),
-    re_path('^teacher/', include('TeachersApp.urls', namespace='TeachersApp')),
-    re_path('^student/', include('StudentsApp.urls',   namespace='StudentsApp')),
+    re_path('^$', views.home
+            , name='home'),
+    re_path('^MCQ/', include('MCQAssignmentsApp.urls', namespace='MCQAssignmentsApp')),
     re_path('^assignment/', include('AssignmentsApp.urls', namespace='AssignmentsApp')),
 
     re_path(r'^login/$',
-            auth_views.LoginView.as_view(template_name='login.html'),
+            auth_views.LoginView.as_view(template_name='common/login.html'),
             name='login'),
     re_path(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
+
+
 
 ]

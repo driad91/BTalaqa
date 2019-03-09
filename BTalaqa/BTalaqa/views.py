@@ -8,25 +8,16 @@ from django.contrib.auth.decorators import login_required
 
 
 @login_required
-def check_user_distribute(request):
-    """
-    Method checks user group and redirects to respective view accordingly,
-    either student or teacher.
-
-    :param request:
-    :return: correct html view
-    """
+def home (request):
     try:
         group = request.user.groups.filter(user=request.user)[0]
         group_name = group.name
     except Exception as E:
         group_name = ''
-
-    if group_name == "Students":
-        return HttpResponseRedirect(reverse('StudentsApp:home'))
-    elif group_name == "Teachers":
-        return HttpResponseRedirect(reverse('TeachersApp:home'))
+    if group_name == 'Teachers':
+        template_to_extend = 'teachers/base.html'
     else:
-        return HttpResponseRedirect(reverse('StudentsApp:home'))
-
+        template_to_extend = 'students/base.html'
+    return render (request, 'common/home.html', context={'template_to_extend':
+                                                             template_to_extend})
 
