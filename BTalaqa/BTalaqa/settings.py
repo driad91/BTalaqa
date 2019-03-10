@@ -56,8 +56,9 @@ ROOT_URLCONF = 'BTalaqa.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['MCQAssignmentsApp/templates', 'BTalaqa/templates',
-                 'StudentsApp/templates', 'AssignmentsApp/templates'],
+        'DIRS': ['MCQAssignmentsApp/templates',
+                 'BTalaqa/templates',
+                 'AssignmentsApp/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

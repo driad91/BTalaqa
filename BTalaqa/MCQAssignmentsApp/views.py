@@ -1,12 +1,10 @@
 from django.shortcuts import render
 
-# Create your views here.
 from django.http import HttpResponseRedirect
-from django.shortcuts import render,reverse, redirect
-from MCQAssignmentsApp.forms.forms import TestForm, answer_form_set,QuestionForm,AnswerForm
-from MCQAssignmentsApp.models import Test,Question
+from django.shortcuts import render, reverse, redirect
+from MCQAssignmentsApp.forms.forms import TestForm, answer_form_set, QuestionForm, AnswerForm
+from MCQAssignmentsApp.models import Test, Question
 from django.contrib.auth.decorators import login_required
-
 
 
 @login_required
@@ -21,13 +19,14 @@ def create_test(request):
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
-            return redirect('MCQAssignmentsApp:create_question_answers',pk= test_object.id)
+            return redirect('MCQAssignmentsApp:create_question_answers', pk=test_object.id)
 
     # if a GET (or any other method) we'll create a blank form
     else:
         form = TestForm()
 
     return render(request, 'teachers/test-creation.html', {'form': form})
+
 
 @login_required
 def create_questions_answers(request, pk):
@@ -60,10 +59,9 @@ def create_questions_answers(request, pk):
                 return redirect('MCQAssignmentsApp:create_question_answers',
                                 pk=pk)
 
-
     else:
-
         test = Test.objects.get(pk=pk)
-        return render(request, 'teachers/questions-answers-creation.html'
-                  , {'question_form': QuestionForm, 'answer_formset': answer_form_set,
-                     'test': test})
+        return render(request, 'teachers/questions-answers-creation.html',
+                      {'question_form': QuestionForm,
+                       'answer_formset': answer_form_set,
+                       'test': test})
