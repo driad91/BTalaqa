@@ -1,6 +1,7 @@
 <body>
 
     {% load static %}
+    {% load extra_tags %}
     <link rel="stylesheet" href="{% static 'css/vendors/bootstrap/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/vendors/ostrich-sans/webfonts/ostrich-sans.css' %}">
         <link rel="stylesheet" href="{% static 'css/custom/base-custom.css' %}">
@@ -26,20 +27,25 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-        <a class="nav-link " href={% url 'home'%}> <i class="fa fa-home"></i> Home<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link " href={% url 'MCQAssignmentsApp:create_test' %}> <i class="fa fa-file"></i> Create Test<span class="sr-only">(current)</span></a>
+        <a class="nav-link " href={% url 'home' %}> <i class="fa fa-home"></i> Home<span class="sr-only">(current)</span></a>
       </li>
 
-        <li class="nav-item active">
-        <a class="nav-link" href={% url 'AssignmentsApp:assign_users_tests' %}> <i class="fas fa-hands-helping"></i> Assign Tests<span class="sr-only">(current)</span></a>
-        </li>
-          <li class="nav-item active">
-        <a class="nav-link" href="#"><i class="fas fa-tachometer-alt"></i> Dashboard<span class="sr-only"></span></a>
-        </li>
+       {% if request.user|has_group:"Teachers" %}
+            <li class="nav-item active">
+                <a class="nav-link " href={% url 'MCQAssignmentsApp:create_test' %}> <i class="fa fa-file"></i> Create Test<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href={% url 'AssignmentsApp:assign_users_tests' %}> <i class="fas fa-hands-helping"></i> Assign Tests<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="#"><i class="fas fa-tachometer-alt"></i> Dashboard<span class="sr-only"></span></a>
+              </li>
 
-
+        {% else %}
+            <li class="nav-item active">
+                <a class="nav-link " href=#> <i class="fa fa-file"></i> My Tests<span class="sr-only">(current)</span></a>
+              </li>
+        {% endif %}
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -53,6 +59,3 @@
 
             {% endblock %}
 </body>
-
-
-

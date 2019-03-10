@@ -1,9 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
-
-
 
 class Test(models.Model):
     """
@@ -12,6 +8,16 @@ class Test(models.Model):
     of different already existing questions
     """
     name = models.CharField(max_length=255)
+
+    class Meta:
+        app_label = 'MCQAssignmentsApp'
+        permissions = (
+            ("edit_test", "Can edit test"),
+            ("read_test", "Can read test"),
+        )
+        verbose_name = 'test'
+        verbose_name_plural = 'tests'
+
     def __str__(self):
         return '%s %s' % (self.id, self.name)
 
@@ -24,6 +30,16 @@ class Question(models.Model):
     exclusive_answer = models.BooleanField(default=True)
     test = models.ManyToManyField(Test)
 
+    class Meta:
+        app_label = 'MCQAssignmentsApp'
+        permissions = (
+            ("edit_question", "Can edit question"),
+            ("read_question", "Can read question"),
+        )
+        verbose_name = 'question'
+        verbose_name_plural = 'questions'
+
+
 class Answer(models.Model):
     """
     Model stores MCQ Answers to be displayed per question
@@ -31,6 +47,15 @@ class Answer(models.Model):
     text = models.CharField(max_length=255)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     is_correct = models.BooleanField(default=False)
+
+    class Meta:
+        app_label = 'MCQAssignmentsApp'
+        permissions = (
+            ("edit_answer", "Can edit answer"),
+            ("read_answer", "Can read answer"),
+        )
+        verbose_name = 'answer'
+        verbose_name_plural = 'answers'
 
 
 
