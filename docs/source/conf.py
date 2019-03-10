@@ -15,12 +15,12 @@
 import os
 import sys
 from pathlib import Path
-p = os.path.join(Path(__file__).parents[2], 'BTalaga')
+p = os.path.join(Path(__file__).parents[2], 'BTalaqa')
 sys.path.insert(0, p)
 
 # -- Project information -----------------------------------------------------
 
-project = 'BTalaga'
+project = 'BTalaqa'
 copyright = '2019, Daniel Riad'
 author = 'Daniel Riad'
 
@@ -107,7 +107,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'BTalagadoc'
+htmlhelp_basename = 'BTalaqadoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -144,7 +144,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'btalaga', 'BTalaga Documentation',
+    (master_doc, 'btalaqa', 'BTalaqa Documentation',
      [author], 1)
 ]
 
@@ -155,8 +155,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'BTalaga', 'BTalaga Documentation',
-     author, 'BTalaga', 'One line description of project.',
+    (master_doc, 'BTalaqa', 'BTalaqa Documentation',
+     author, 'BTalaqa', 'One line description of project.',
      'Miscellaneous'),
 ]
 
