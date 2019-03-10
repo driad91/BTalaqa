@@ -12,21 +12,22 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
-
+import os
+import sys
+from pathlib import Path
+p = os.path.join(Path(__file__).parents[2], 'BTalaga')
+sys.path.insert(0, p)
 
 # -- Project information -----------------------------------------------------
 
-project = 'BTalaqa'
+project = 'BTalaga'
 copyright = '2019, Daniel Riad'
 author = 'Daniel Riad'
 
 # The short X.Y version
-version = ''
+version = '0.1'
 # The full version, including alpha/beta/rc tags
-release = ''
+release = '0.1'
 
 
 # -- General configuration ---------------------------------------------------
@@ -38,12 +39,13 @@ release = ''
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-
-
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.todo',
+    'sphinx.ext.coverage',
+    'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'sphinx.ext.intersphinx']
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -78,7 +80,7 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -105,7 +107,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'BTalaqadoc'
+htmlhelp_basename = 'BTalagadoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -132,7 +134,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'BTalaqa.tex', 'BTalaqa Documentation',
+    (master_doc, 'BTalaga.tex', 'BTalaga Documentation',
      'Daniel Riad', 'manual'),
 ]
 
@@ -142,7 +144,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'btalaqa', 'BTalaqa Documentation',
+    (master_doc, 'btalaga', 'BTalaga Documentation',
      [author], 1)
 ]
 
@@ -153,8 +155,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'BTalaqa', 'BTalaqa Documentation',
-     author, 'BTalaqa', 'One line description of project.',
+    (master_doc, 'BTalaga', 'BTalaga Documentation',
+     author, 'BTalaga', 'One line description of project.',
      'Miscellaneous'),
 ]
 
@@ -178,3 +180,8 @@ epub_exclude_files = ['search.html']
 
 
 # -- Extension configuration -------------------------------------------------
+
+# -- Options for todo extension ----------------------------------------------
+
+# If true, `todo` and `todoList` produce output, else they produce nothing.
+todo_include_todos = True
