@@ -1,13 +1,11 @@
-from django.shortcuts import render
-
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, reverse, redirect
+from django.shortcuts import render, redirect
 from MCQAssignmentsApp.forms.forms import TestForm, answer_form_set, QuestionForm, AnswerForm
 from MCQAssignmentsApp.models import Test, Question
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 
 
 @login_required
+@permission_required('MCQAssignmentsApp.edit_test')
 def create_test(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -29,14 +27,13 @@ def create_test(request):
 
 
 @login_required
+@permission_required('MCQAssignmentsApp.edit_question')
 def create_questions_answers(request, pk):
     """
 
     :param request:
     :return:
     """
-    #formset = question_form_set
-
     if request.method == "POST":
         question_form = QuestionForm(request.POST)
         answer_forms = answer_form_set(request.POST)
