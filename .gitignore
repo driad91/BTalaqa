@@ -111,7 +111,4 @@ ENV/
 .mypy_cache/
 
 #
-.idea/
-#migrations
-.migrations/
-migrations/
+.idea
