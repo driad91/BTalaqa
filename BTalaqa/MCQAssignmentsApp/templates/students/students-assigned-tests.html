@@ -3,6 +3,8 @@
 {% block content %}
 <br>
 <b> Tests </b>
+{% if user_tests.all %}
+
 <ul>
 {% for test in user_tests %}
 
@@ -10,5 +12,11 @@
 
 {% endfor %}
 </ul>
-</form>
+
+{% else %}
+
+There are currently no tests assigned to you :(! ...explore available tests?!
+
+{% endif %}
+
 {% endblock %}

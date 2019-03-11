@@ -76,6 +76,5 @@ def students_assignments(request):
 
     user_tests = Assignments.objects.filter(user_id__username=request.user)\
         .values('test_id__name')
-    print(user_tests)
     return render(request, 'students/students-assigned-tests.html',
                   context={'user_tests': user_tests})
