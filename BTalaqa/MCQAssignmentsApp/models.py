@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Test(models.Model):
@@ -57,6 +58,20 @@ class Answer(models.Model):
         verbose_name = 'answer'
         verbose_name_plural = 'answers'
 
+
+class StudentTestAnswers (models.Model):
+    """
+    Model Stores the students answers to tests
+    """
+    student_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    test_id = models.ForeignKey (Test, on_delete=models.CASCADE)
+    question_id = models.ForeignKey(Question, on_delete=models.CASCADE)
+    answer_id = models.ForeignKey(Answer, on_delete=models.CASCADE)
+
+    class Meta:
+        app_label = 'MCQAssignmentsApp'
+        verbose_name = 'student answer'
+        verbose_name_plural = 'student answers'
 
 
 

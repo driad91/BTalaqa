@@ -1,5 +1,5 @@
-from django.forms import ModelForm, Textarea, TextInput, formset_factory
-from MCQAssignmentsApp.models import Question, Answer, Test
+from django.forms import ModelForm, Textarea, TextInput, formset_factory, Form
+from MCQAssignmentsApp.models import Question, Answer, Test, StudentTestAnswers
 
 
 class TestForm(ModelForm):
@@ -50,4 +50,25 @@ class QuestionForm(ModelForm):
 answer_form_set = formset_factory(form=AnswerForm,
                                   extra=4,
                                   can_delete=True)
+
+
+class StudentAnswerForm(Form):
+
+    """
+    Student Answer Form, basically form  created to render the assigned tests
+    to students as they are created by the teachers as a form and save them in
+    the StudentTestAnswers Model
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(StudentAnswerForm, self).__init__(*args, **kwargs)
+        self.test_id = kwargs.pop('test_id')
+    relevant_questions = Question.objects.filter(test=Form.test_id).values()
+    if relevant_questions:
+        relevant_answers = Answer.object.filters(question__in=list(relevant_questions.values('id')))
+        
+
+
+
+
 

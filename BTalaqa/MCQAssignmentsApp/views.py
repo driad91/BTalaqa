@@ -42,8 +42,6 @@ def create_questions_answers(request, pk):
         if question_form.is_valid():
             valid = True
             question = question_form.save()
-            print("HERE QUESTION")
-            print(question.pk)
             for answer_form in answer_forms:
                 if answer_form.is_valid():
                     answer_form = answer_form.save(commit=False)
@@ -75,6 +73,6 @@ def students_assignments(request):
     """
 
     user_tests = Assignments.objects.filter(user_id__username=request.user)\
-        .values('test_id__name')
+        .values('test_id','test_id__name')
     return render(request, 'students/students-assigned-tests.html',
                   context={'user_tests': user_tests})
