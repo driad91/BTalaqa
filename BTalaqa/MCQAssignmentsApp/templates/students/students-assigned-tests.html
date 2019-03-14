@@ -8,7 +8,7 @@
 <ul>
 {% for test in user_tests %}
 
-    <li><a href="#"> {{ test.test_id__name }} </a> </li>
+    <li><a href={% url 'MCQAssignmentsApp:render_test' test.test_id %}> {{ test.test_id__name }} </a> </li>
 
 {% endfor %}
 </ul>

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from MCQAssignmentsApp.forms.forms import TestForm, answer_form_set, QuestionForm, AnswerForm
-from MCQAssignmentsApp.models import Test, Question
+from MCQAssignmentsApp.forms.forms import TestForm, answer_form_set,\
+    QuestionForm, AnswerForm
+from MCQAssignmentsApp.models import Test, Question, Answer
 from AssignmentsApp.models import Assignments
 from django.contrib.auth.decorators import login_required, permission_required
 
@@ -76,3 +77,14 @@ def students_assignments(request):
         .values('test_id','test_id__name')
     return render(request, 'students/students-assigned-tests.html',
                   context={'user_tests': user_tests})
+@login_required
+@permission_required('MCQAssignmentsApp.read_test')
+def render_test(request, id):
+    relevant_questions = Question.objects.filter(test=id)
+    relevant_answers =Answer.objects.filter(question__in= relevant_questions.values_list('id', flat=True))
+    print("Questions")
+    print(relevant_questions.values())
+    print("Answers")
+    print(relevant_answers.values())
+    return render(request, 'students/selected-test.html', context={'questions': relevant_questions.values(),
+                                                                   'answers':relevant_answers.values()})
