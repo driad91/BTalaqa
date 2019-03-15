@@ -80,3 +80,14 @@ def create_questions_answers(request, pk):
                   {'question_form': QuestionForm,
                    'answer_formset': answer_form_set,
                    'test': test})
+
+
+@login_required
+def dashboard(request):
+    """
+    Display statistic about student progress in their tests.
+
+    :param request:
+    :return:
+    """
+    return render(request, 'dashboard.html')
