@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Test(models.Model):
@@ -8,6 +9,7 @@ class Test(models.Model):
     of different already existing questions
     """
     name = models.CharField(max_length=255)
+    assignment = models.ManyToManyField('auth.User', through='TestUserAssignment', related_name='assignment')
 
     class Meta:
         app_label = 'MCQAssignmentsApp'
@@ -58,5 +60,22 @@ class Answer(models.Model):
         verbose_name_plural = 'answers'
 
 
+class TestUserAssignment(models.Model):
+    """
+    Model stores assignments as a combination of user_id and test_id, the idea
+    is that teachers assign tests to students in a many to many relationship
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+
+    class Meta:
+        app_label = 'MCQAssignmentsApp'
+        unique_together = ('user', 'test')
+        permissions = (
+            ("edit_assignment", "Can edit assignment"),
+            ("read_assignment", "Can read assignment"),
+        )
+        verbose_name = 'user_test'
+        verbose_name_plural = 'user_tests'
 
 
