@@ -55,9 +55,6 @@ def create_questions_answers(request, pk):
 
             for answer_form in answer_forms:
                 if answer_form.is_valid():
-                    name = answer_form.cleaned_data.get('name')
-                    if name:
-                        print(name)
                     answer_form = answer_form.save(commit=False)
                     answer_form.question = question
                     answer_form.save()
