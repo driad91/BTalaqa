@@ -1,8 +1,13 @@
 {% extends 'common/base.html' %}
-
 {% block content %}
+{% load static %}
+<script src="{% static 'js/custom/students/AjaxCsrf.js' %}"></script>
 
-<form action="/MCQ/submit_form" method="post">
+<script src="{% static 'js/custom/students/CheckTest.js' %}"></script>
+
+<form id="test_form" test_id={{ test_id }} action="#" method="post">
+        {% csrf_token %}
+
 {% for question in questions %}
 <div>
     <b> {{ forloop.counter }}. {{ question.text }} </b>
@@ -10,7 +15,7 @@
     {% for answer in answers %}
     {% if answer.question_id == question.id %}
     <div>
-  <input type="radio" question_id={{ question.id }} id=  {{ answer.id }}  name={{ question.id}}>
+  <input type="radio" question_id={{ question.id }} value=  {{ answer.id }}  name={{ question.id}}>
   <label for= {{ answer.id }} >   {{ answer.text }}</label>
     </div>
 
@@ -18,7 +23,7 @@
     {% endfor %}
 </div>
 {% endfor %}
-<button type="submit"> Submit Test  </button>
+<button id="submit_test" type="submit"> Submit Test  </button>
 </form>
 
 {% endblock %}

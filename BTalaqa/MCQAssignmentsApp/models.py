@@ -63,15 +63,16 @@ class StudentTestAnswers (models.Model):
     """
     Model Stores the students answers to tests
     """
-    student_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    test_id = models.ForeignKey (Test, on_delete=models.CASCADE)
-    question_id = models.ForeignKey(Question, on_delete=models.CASCADE)
-    answer_id = models.ForeignKey(Answer, on_delete=models.CASCADE)
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    test = models.ForeignKey (Test, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'MCQAssignmentsApp'
         verbose_name = 'student answer'
         verbose_name_plural = 'student answers'
+        unique_together = ('student', 'test', 'question','answer')
 
 
 

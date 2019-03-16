@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from MCQAssignmentsApp.forms.forms import TestForm, answer_form_set,\
     QuestionForm, AnswerForm
-from MCQAssignmentsApp.models import Test, Question, Answer
+from MCQAssignmentsApp.models import Test, Question, Answer, StudentTestAnswers
 from AssignmentsApp.models import Assignments
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-
+import json
 
 @login_required
 @permission_required('MCQAssignmentsApp.edit_test')
@@ -105,9 +105,34 @@ def students_assignments(request):
 def render_test(request, id):
     relevant_questions = Question.objects.filter(test=id)
     relevant_answers =Answer.objects.filter(question__in= relevant_questions.values_list('id', flat=True))
-    print("Questions")
-    print(relevant_questions.values())
-    print("Answers")
-    print(relevant_answers.values())
     return render(request, 'students/selected-test.html', context={'questions': relevant_questions.values(),
-                                                                   'answers':relevant_answers.values()})
+                                                                   'answers': relevant_answers.values(),
+                                                                   'test_id': id})
+@login_required
+@permission_required('MCQAssignmentsApp.read_test')
+def submit_test(request):
+    data = json.loads(request.POST.get('values'))
+    student_answers_dict = data['student_answers']
+    student = request.user
+    test_id = data['test_id']
+    test = Test.objects.get(pk=test_id)
+    qs_assignment = Assignments.objects.filter(test_id= test, user_id=student)
+    if qs_assignment.exists():
+        qs_assignment.delete()
+    qs = StudentTestAnswers.objects.filter(test=test, student=student)
+    if qs.exists():
+        qs.delete()
+    for k, v in student_answers_dict.items():
+        question = Question.objects.get(pk=k)
+        answer = Answer.objects.get(pk=v)
+        test_answer = StudentTestAnswers.objects.create(student=student,
+                                          question=question,
+                                          answer=answer,
+                                          test=test)
+        test_answer.save()
+    percentage = 50
+    msg = 'You scored ' + percentage  +'% on the test!'
+    return render(request, msg)
+
+
+
