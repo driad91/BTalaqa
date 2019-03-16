@@ -15,7 +15,7 @@
 import os
 import sys
 from pathlib import Path
-p = os.path.join(Path(__file__).parents[2], 'BTalaga')
+p = os.path.join(Path(__file__).parents[2], 'BTalaqa')
 sys.path.insert(0, p)
 
 # -- Project information -----------------------------------------------------
