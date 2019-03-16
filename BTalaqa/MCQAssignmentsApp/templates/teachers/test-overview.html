@@ -1,0 +1,36 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h3> Test:  {{ test.name }}</h3>
+
+<div class="row">
+    <div class="col-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Question</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for question in questions %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{question.text}}</td>
+                    <td><a href={% url 'MCQAssignmentsApp:delete_question' pk=test.id question_pk=question.id %}> delete</a></td>
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a class="btn btn-info" href={% url 'MCQAssignmentsApp:create_question_answers' pk=test.id %}> add question</a>
+
+    </div>
+</div>
+
+{% endblock %}

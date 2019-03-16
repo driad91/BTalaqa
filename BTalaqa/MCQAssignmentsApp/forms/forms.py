@@ -1,4 +1,4 @@
-from django.forms import ModelForm, Textarea, TextInput, formset_factory
+from django.forms import Form, ModelForm, BooleanField, TextInput, formset_factory
 from MCQAssignmentsApp.models import Question, Answer, Test
 
 
@@ -50,4 +50,8 @@ class QuestionForm(ModelForm):
 answer_form_set = formset_factory(form=AnswerForm,
                                   extra=1,
                                   can_delete=False)
+
+
+class DeleteQuestion(Form):
+    yes_no = BooleanField(label='Are you sure?')
 

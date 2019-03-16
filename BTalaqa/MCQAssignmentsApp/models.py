@@ -8,7 +8,7 @@ class Test(models.Model):
     questions to be able to create different tests as different combinations
     of different already existing questions
     """
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=False)
     assignment = models.ManyToManyField('auth.User', through='TestUserAssignment', related_name='assignment')
 
     class Meta:
@@ -28,7 +28,7 @@ class Question(models.Model):
     """
     Model stores MCQ Questions
     """
-    text = models.CharField(max_length=255)
+    text = models.CharField(max_length=255, blank=False, null=False)
     exclusive_answer = models.BooleanField(default=True)
     test = models.ManyToManyField(Test)
 
@@ -46,7 +46,7 @@ class Answer(models.Model):
     """
     Model stores MCQ Answers to be displayed per question
     """
-    text = models.CharField(max_length=255)
+    text = models.CharField(max_length=255, blank=False, null=False)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     is_correct = models.BooleanField(default=False)
 
@@ -77,5 +77,3 @@ class TestUserAssignment(models.Model):
         )
         verbose_name = 'user_test'
         verbose_name_plural = 'user_tests'
-
-

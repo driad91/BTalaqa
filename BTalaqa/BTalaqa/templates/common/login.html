@@ -1,10 +1,41 @@
-{% block title %}Login{% endblock %}
+<html>
+<head>
 
-{% block content %}
-  <h2>Login</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-  </form>
-{% endblock %}
+</head>
+
+<body>
+    {% load static %}
+    {% load extra_tags %}
+    <link rel="stylesheet" href="{% static 'css/vendors/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendors/ostrich-sans/webfonts/ostrich-sans.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom/base-custom.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.7.0/css/all.css">
+
+    <script src="{% static 'js/vendors/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/vendors/bootstrap/bootstrap.min.js' %}"></script>
+
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col-8">
+                <h1><div class="font-ostrich-sans"> <i class="fas fa-language"> </i> BTalaقa</div></h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-8">
+          {% block content %}
+            <h2>Login</h2>
+            <form method="post">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <button type="submit">Login</button>
+            </form>
+          {% endblock %}
+
+        </div>
+    </div>
+</body>
+</html>
