@@ -152,3 +152,14 @@ def delete_question(request, pk, question_pk):
                    'answers': answers,
                    'form': DeleteQuestion
                    })
+
+
+@login_required
+def dashboard(request):
+    """
+    Display statistic about student progress in their tests.
+
+    :param request:
+    :return:
+    """
+    return render(request, 'dashboard.html')

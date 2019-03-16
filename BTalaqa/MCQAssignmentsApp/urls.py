@@ -12,5 +12,7 @@ urlpatterns = [
     re_path('^delete_question/(?P<pk>\d+)/(?P<question_pk>\d+)/$', views.delete_question
             , name='delete_question')
 
+            , name='create_question_answers'),
+    re_path('^dashboard/', views.dashboard, name='dashboard')
 ]
 
