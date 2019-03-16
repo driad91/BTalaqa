@@ -1,45 +1,57 @@
-<body>
+<html>
+<head>
 
+</head>
+
+<body>
     {% load static %}
     {% load extra_tags %}
     <link rel="stylesheet" href="{% static 'css/vendors/bootstrap/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'css/vendors/ostrich-sans/webfonts/ostrich-sans.css' %}">
-        <link rel="stylesheet" href="{% static 'css/custom/base-custom.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/vendors/ostrich-sans/webfonts/ostrich-sans.css' %}">
+    <link rel="stylesheet" href="{% static 'css/custom/base-custom.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.7.0/css/all.css">
-
-
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.7.0/css/all.css">
 
     <script src="{% static 'js/vendors/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/vendors/bootstrap/bootstrap.min.js' %}"></script>
+
+
     <div class="page-header">
-        <h1><div class="font-ostrich-sans"> <i class="fas fa-language"> </i>   BTalaقa</div></h1>
-        <a id="logout" href={% url 'logout' %}> Logout </a>
+        <div class="row">
+            <div class="col-8">
+                <h1><div class="font-ostrich-sans"> <i class="fas fa-language"> </i> BTalaقa</div></h1>
+            </div>
+            <div class="col-4 text-right">
+                <a class="btn btn-secondary btn-sm" id="logout" href={% url 'logout' %}> Logout </a>
+            </div>
+        </div>
+
+
+
     </div>
 
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark col-md-12">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark col-md-12">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-        <a class="nav-link " href={% url 'home' %}> <i class="fa fa-home"></i> Home<span class="sr-only">(current)</span></a>
-      </li>
-
-       {% if request.user|has_group:"Teachers" %}
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link " href={% url 'MCQAssignmentsApp:create_test' %}> <i class="fa fa-file"></i> Create Test<span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link" href={% url 'AssignmentsApp:assign_users_tests' %}> <i class="fas fa-hands-helping"></i> Assign Tests<span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="#"><i class="fas fa-tachometer-alt"></i> Dashboard<span class="sr-only"></span></a>
-              </li>
+            <a class="nav-link " href={% url 'home' %}> <i class="fa fa-home"></i> Home<span class="sr-only">(current)</span></a>
+          </li>
+
+           {% if request.user|has_group:"Teachers" %}
+                <li class="nav-item active">
+                    <a class="nav-link " href={% url 'MCQAssignmentsApp:create_test' %}> <i class="fa fa-file"></i> Create Test<span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="nav-item active">
+                    <a class="nav-link" href={% url 'AssignmentsApp:assign_users_tests' %}> <i class="fas fa-hands-helping"></i> Assign Tests<span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="nav-item active">
+                    <a class="nav-link" href="#"><i class="fas fa-tachometer-alt"></i> Dashboard<span class="sr-only"></span></a>
+                  </li>
 
         {% else %}
             <li class="nav-item active">
@@ -54,8 +66,12 @@
   </div>
 </nav>
 
-            {% block content %}
+    {% include 'common/messages.html' %}
 
+    {% block scripts %}
+    {% endblock %}
 
-            {% endblock %}
+    {% block content %}
+    {% endblock %}
 </body>
+</html>

@@ -48,8 +48,8 @@ class QuestionForm(ModelForm):
 
 
 answer_form_set = formset_factory(form=AnswerForm,
-                                  extra=4,
-                                  can_delete=True)
+                                  extra=1,
+                                  can_delete=False)
 
 
 
