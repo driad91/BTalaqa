@@ -12,6 +12,11 @@ urlpatterns = [
     re_path('^render_test/(?P<id>\d+)/$', views.render_test
             , name='render_test'),
     re_path('submit_test/', views.submit_test
-            , name='submit_test')
-
+            , name='submit_test'),
+    re_path('^overview/(?P<pk>\d+)/$', views.test_overview
+            , name='test_overview'),
+    re_path('^delete_question/(?P<pk>\d+)/(?P<question_pk>\d+)/$', views.delete_question
+            , name='delete_question'),
+    re_path('^dashboard/', views.dashboard, name='dashboard')
 ]
+

@@ -8,7 +8,8 @@ class Test(models.Model):
     questions to be able to create different tests as different combinations
     of different already existing questions
     """
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=False)
+    assignment = models.ManyToManyField('auth.User', through='TestUserAssignment', related_name='assignment')
 
     class Meta:
         app_label = 'MCQAssignmentsApp'
@@ -27,7 +28,7 @@ class Question(models.Model):
     """
     Model stores MCQ Questions
     """
-    text = models.CharField(max_length=255)
+    text = models.CharField(max_length=255, blank=False, null=False)
     exclusive_answer = models.BooleanField(default=True)
     test = models.ManyToManyField(Test)
 
@@ -45,7 +46,7 @@ class Answer(models.Model):
     """
     Model stores MCQ Answers to be displayed per question
     """
-    text = models.CharField(max_length=255)
+    text = models.CharField(max_length=255, blank=False, null=False)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     is_correct = models.BooleanField(default=False)
 
@@ -74,5 +75,20 @@ class StudentTestAnswers (models.Model):
         verbose_name_plural = 'student answers'
         unique_together = ('student', 'test', 'question','answer')
 
+class TestUserAssignment(models.Model):
+    """
+    Model stores assignments as a combination of user_id and test_id, the idea
+    is that teachers assign tests to students in a many to many relationship
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    test = models.ForeignKey(Test, on_delete=models.CASCADE)
 
-
+    class Meta:
+        app_label = 'MCQAssignmentsApp'
+        unique_together = ('user', 'test')
+        permissions = (
+            ("edit_assignment", "Can edit assignment"),
+            ("read_assignment", "Can read assignment"),
+        )
+        verbose_name = 'user_test'
+        verbose_name_plural = 'user_tests'

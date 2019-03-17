@@ -1,0 +1,52 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h3> Test:  {{ test.name }}</h3>
+
+<div class="row">
+    <div class="col-12">
+        Question:
+        <br>
+        {{ question.text }}
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Answer</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for answer in answers %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{answer.text}}</td>
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<form class="form-horizontal" method="POST" action="">
+{% csrf_token %}
+
+<div class="row form-row spacer">
+    <div class="col-4 offset-2">
+        {{ form }}
+        <button type="submit" class="btn btn-block btn-danger">Delete</button>
+    </div>
+</div>
+</form>
+
+
+{% endblock %}
