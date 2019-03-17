@@ -4,6 +4,7 @@
 <script src="{% static 'js/custom/students/AjaxCsrf.js' %}"></script>
 
 <script src="{% static 'js/custom/students/CheckTest.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/custom/test-view.css' %}">
 
 <div id="test_form" test_id={{ test_id }} action="#" method="post">
         {% csrf_token %}
@@ -16,7 +17,7 @@
     {% if answer.question_id == question.id %}
     <div>
   <input type="radio" question_id={{ question.id }} value=  {{ answer.id }}  name={{ question.id}}>
-  <label for= {{ answer.id }} >   {{ answer.text }}</label>
+  <label for= {{ answer.id }} >   {{ answer.text }} </label>   <div id="correction_div_{{ question.id }}_{{ answer.id }}"></div>
     </div>
 
     {% endif %}
