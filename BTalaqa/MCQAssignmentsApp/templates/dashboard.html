@@ -5,7 +5,11 @@
 
 <div class="row">
     <div class="col-12">
-        test
+        <h2>tests overview:</h2>
+        {% for test in tests %}
+        <a href={% url 'MCQAssignmentsApp:test_overview' pk=test.id %}> {{ test.name }}</a>
+        <br>
+        {% endfor %}
     </div>
 </div>
 

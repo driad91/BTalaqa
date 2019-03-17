@@ -4,6 +4,7 @@ from MCQAssignmentsApp.models import Test, Question, Answer
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.forms import formset_factory
 
 
 @login_required
@@ -52,6 +53,10 @@ def create_questions_answers(request, pk):
         messages.info(request, "There is no test with this id")
         test = None
         questions = []
+
+    answer_form_set = formset_factory(form=AnswerForm,
+                                      extra=1,
+                                      can_delete=False)
 
     if request.method == "POST":
         question_form = QuestionForm(request.POST)
@@ -162,4 +167,4 @@ def dashboard(request):
     :param request:
     :return:
     """
-    return render(request, 'dashboard.html')
+    return render(request, 'dashboard.html', {'tests': Test.objects.all()})

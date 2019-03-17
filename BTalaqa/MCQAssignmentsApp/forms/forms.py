@@ -1,4 +1,4 @@
-from django.forms import Form, ModelForm, BooleanField, TextInput, formset_factory
+from django.forms import Form, ModelForm, BooleanField, Textarea, TextInput
 from MCQAssignmentsApp.models import Question, Answer, Test
 
 
@@ -33,6 +33,13 @@ class AnswerForm(ModelForm):
             'text': 'Answer text',
             'is_correct': 'Correct Answer?'
         }
+        widgets = {
+            'text': Textarea,
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(AnswerForm, self).__init__(*args, **kwargs)  # Call to ModelForm constructor
+        self.fields['text'].widget.attrs['width'] = 300
 
 
 class QuestionForm(ModelForm):
@@ -45,11 +52,9 @@ class QuestionForm(ModelForm):
         labels = {
             'text': 'Question text',
         }
-
-
-answer_form_set = formset_factory(form=AnswerForm,
-                                  extra=1,
-                                  can_delete=False)
+        widgets = {
+            'text': Textarea,
+        }
 
 
 class DeleteQuestion(Form):

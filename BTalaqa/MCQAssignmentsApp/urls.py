@@ -10,9 +10,7 @@ urlpatterns = [
     re_path('^overview/(?P<pk>\d+)/$', views.test_overview
             , name='test_overview'),
     re_path('^delete_question/(?P<pk>\d+)/(?P<question_pk>\d+)/$', views.delete_question
-            , name='delete_question')
-
-            , name='create_question_answers'),
+            , name='delete_question'),
     re_path('^dashboard/', views.dashboard, name='dashboard')
 ]
 
