@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
-from MCQAssignmentsApp.forms.forms import TestForm, QuestionForm, AnswerForm, DeleteQuestion
-from MCQAssignmentsApp.models import Test, Question, Answer, StudentTestAnswers
-from AssignmentsApp.models import Assignments
+from MCQAssignmentsApp.forms.forms import TestForm, QuestionForm, AnswerForm, DeleteQuestion, AssignmentsForm
+from MCQAssignmentsApp.models import Test, Question, Answer, StudentTestAnswers, TestUserAssignment
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -184,7 +183,7 @@ def students_assignments(request):
     :return: template
     """
 
-    user_tests = Assignments.objects.filter(user_id__username=request.user)\
+    user_tests = TestUserAssignment.objects.filter(user__username=request.user)\
         .values('test_id','test_id__name')
     return render(request, 'students/students-assigned-tests.html',
                   context={'user_tests': user_tests})
@@ -220,7 +219,7 @@ def submit_test(request):
     test = Test.objects.get(pk=test_id)
     correct_answers = Answer.objects.filter(is_correct=True,
                                             question__test=test).values('id', 'question_id')
-    qs_assignment = Assignments.objects.filter(test_id=test, user_id=student)
+    qs_assignment = TestUserAssignment.objects.filter(test=test, user=student)
     if qs_assignment.exists():
         qs_assignment.delete()
     qs = StudentTestAnswers.objects.filter(test=test, student=student)
@@ -239,5 +238,25 @@ def submit_test(request):
     return JsonResponse({'percentage': percentage*100,
                          'corrections_dict': corrections_dict})
 
+def assign_users(request):
+    """
+    render html to assign users to test
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = AssignmentsForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            assignment_form = form.save()
+            return render(request, 'teachers/assign-users-tests.html',
+                          {'form': form})
+        else:
+            return render(request, 'teachers/assign-users-tests.html',
+                          {'form': form})
 
-
+    else:
+        form = AssignmentsForm()
+        return render(request, 'teachers/assign-users-tests.html',
+                      {'form': form})

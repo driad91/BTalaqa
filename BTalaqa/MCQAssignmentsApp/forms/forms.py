@@ -1,7 +1,8 @@
 from django.forms import Form, ModelForm, BooleanField, Textarea, TextInput
-from MCQAssignmentsApp.models import Question, Answer, Test
+from MCQAssignmentsApp.models import Question, Answer, Test, TestUserAssignment
 from django.forms import ModelForm, Textarea, TextInput, formset_factory, Form
 from MCQAssignmentsApp.models import Question, Answer, Test, StudentTestAnswers
+from django.contrib.auth.models import User
 
 
 class TestForm(ModelForm):
@@ -61,4 +62,17 @@ class QuestionForm(ModelForm):
 
 class DeleteQuestion(Form):
     yes_no = BooleanField(label='Are you sure?')
+
+
+class AssignmentsForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AssignmentsForm, self).__init__(*args, **kwargs)  # populates the post
+        self.fields['user'].queryset = User.objects.filter(groups__name__in=['Students'])
+    """
+    Test Form
+    """
+    class Meta:
+        model = TestUserAssignment
+        fields = '__all__'
 
