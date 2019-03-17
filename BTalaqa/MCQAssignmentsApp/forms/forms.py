@@ -34,7 +34,7 @@ class AnswerForm(ModelForm):
             'is_correct': 'Correct Answer?'
         }
         widgets = {
-            'text': Textarea,
+            'text': TextInput,
         }
 
     def __init__(self, *args, **kwargs):
@@ -53,7 +53,7 @@ class QuestionForm(ModelForm):
             'text': 'Question text',
         }
         widgets = {
-            'text': Textarea,
+            'text': TextInput,
         }
 
 
