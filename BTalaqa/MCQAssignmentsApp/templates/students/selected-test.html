@@ -5,7 +5,7 @@
 
 <script src="{% static 'js/custom/students/CheckTest.js' %}"></script>
 
-<form id="test_form" test_id={{ test_id }} action="#" method="post">
+<div id="test_form" test_id={{ test_id }} action="#" method="post">
         {% csrf_token %}
 
 {% for question in questions %}
@@ -24,6 +24,6 @@
 </div>
 {% endfor %}
 <button id="submit_test" type="submit"> Submit Test  </button>
-</form>
+</div>
 
 {% endblock %}

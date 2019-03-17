@@ -34,8 +34,9 @@ $.ajax({         type:"POST",
                  url:"submit_test/",
                  data: {"values":JSON.stringify({"student_answers":questionAnswersDict,"test_id": testId})},
                  success: function(data){
-                 alert(data);
-                 }
+                    percentage = data['percentage'] + ' %'
+                    alert('You scored '+ percentage + ' on this test');
+                         }
             });
 
 
