@@ -53,18 +53,19 @@
                     <a class="nav-link" href={% url 'MCQAssignmentsApp:dashboard' %}><i class="fas fa-tachometer-alt"></i> Dashboard<span class="sr-only"></span></a>
                   </li>
 
-            {% else %}
-                <li class="nav-item active">
-                    <a class="nav-link " href=#> <i class="fa fa-file"></i> My Tests<span class="sr-only">(current)</span></a>
-                  </li>
-            {% endif %}
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-      </div>
-    </nav>
+        {% else %}
+            <li class="nav-item active">
+                <a class="nav-link " href={% url 'MCQAssignmentsApp:students_assignments' %}> <i class="fa fa-file"></i> My Tests<span class="sr-only">(current)</span></a>
+              </li>
+        {% endif %}
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+
     {% include 'common/messages.html' %}
 
     {% block scripts %}

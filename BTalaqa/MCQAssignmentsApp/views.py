@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
 from MCQAssignmentsApp.forms.forms import TestForm, QuestionForm, AnswerForm, DeleteQuestion
-from MCQAssignmentsApp.models import Test, Question, Answer
+from MCQAssignmentsApp.models import Test, Question, Answer, StudentTestAnswers
+from AssignmentsApp.models import Assignments
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.http import JsonResponse
 from django.forms import formset_factory
 
+from MCQAssignmentsApp.helpers import test_helper
+import json
 
 @login_required
 @permission_required('MCQAssignmentsApp.edit_test')
@@ -168,3 +172,72 @@ def dashboard(request):
     :return:
     """
     return render(request, 'dashboard.html', {'tests': Test.objects.all()})
+
+
+@login_required
+@permission_required('MCQAssignmentsApp.read_test')
+def students_assignments(request):
+    """
+    returns view of all tests assigned to the logged in student and renders the
+    template
+    :param request: http request
+    :return: template
+    """
+
+    user_tests = Assignments.objects.filter(user_id__username=request.user)\
+        .values('test_id','test_id__name')
+    return render(request, 'students/students-assigned-tests.html',
+                  context={'user_tests': user_tests})
+@login_required
+@permission_required('MCQAssignmentsApp.read_test')
+def render_test(request, id):
+    """
+    renders any chosen test by the user in the form of a test
+    :param request: http request
+    :param id: id of the test to be rendered
+    :return:
+    """
+    relevant_questions = Question.objects.filter(test=id)
+    relevant_answers =Answer.objects.filter(question__in=relevant_questions.values_list('id', flat=True))
+    return render(request, 'students/selected-test.html', context={'questions': relevant_questions.values(),
+                                                                   'answers': relevant_answers.values(),
+                                                                   'test_id': id})
+@login_required
+@permission_required('MCQAssignmentsApp.read_test')
+def submit_test(request):
+    """
+    Handles different things to be done when student submits test, i.e. saving
+    of the students answers, removing test as an assignment to this student
+    and checks if the answers for this test were already in the database,
+    and if so deletes them and updates them with the new values
+    :param request: Ajax request
+    :return: Msg, containing the score of the student
+    """
+    data = json.loads(request.POST.get('values'))
+    student_answers_dict = data['student_answers']
+    student = request.user
+    test_id = data['test_id']
+    test = Test.objects.get(pk=test_id)
+    correct_answers = Answer.objects.filter(is_correct=True,
+                                            question__test=test).values('id', 'question_id')
+    qs_assignment = Assignments.objects.filter(test_id=test, user_id=student)
+    if qs_assignment.exists():
+        qs_assignment.delete()
+    qs = StudentTestAnswers.objects.filter(test=test, student=student)
+    if qs.exists():  # if student has previous answers for this test
+        qs.delete()  # delete
+    for k, v in student_answers_dict.items():
+        question = Question.objects.get(pk=k)  # retrieving question item from id
+        answer = Answer.objects.get(pk=v)  # retrieving answer obj from id
+        test_answer = StudentTestAnswers.objects.create(student=student,
+                                                        question=question,
+                                                        answer=answer,
+                                                        test=test)
+        test_answer.save()
+    percentage, corrections_dict = test_helper.test_correction\
+        (student_answers=student_answers_dict, model_answers=correct_answers)
+    return JsonResponse({'percentage': percentage*100,
+                         'corrections_dict': corrections_dict})
+
+
+

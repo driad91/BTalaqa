@@ -1,0 +1,29 @@
+{% extends 'common/base.html' %}
+{% block content %}
+{% load static %}
+<script src="{% static 'js/custom/students/AjaxCsrf.js' %}"></script>
+
+<script src="{% static 'js/custom/students/CheckTest.js' %}"></script>
+
+<div id="test_form" test_id={{ test_id }} action="#" method="post">
+        {% csrf_token %}
+
+{% for question in questions %}
+<div>
+    <b> {{ forloop.counter }}. {{ question.text }} </b>
+    <br>
+    {% for answer in answers %}
+    {% if answer.question_id == question.id %}
+    <div>
+  <input type="radio" question_id={{ question.id }} value=  {{ answer.id }}  name={{ question.id}}>
+  <label for= {{ answer.id }} >   {{ answer.text }}</label>
+    </div>
+
+    {% endif %}
+    {% endfor %}
+</div>
+{% endfor %}
+<button id="submit_test" type="submit"> Submit Test  </button>
+</div>
+
+{% endblock %}

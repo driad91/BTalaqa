@@ -60,6 +60,21 @@ class Answer(models.Model):
         verbose_name_plural = 'answers'
 
 
+class StudentTestAnswers (models.Model):
+    """
+    Model Stores the students answers to tests
+    """
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    test = models.ForeignKey (Test, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+
+    class Meta:
+        app_label = 'MCQAssignmentsApp'
+        verbose_name = 'student answer'
+        verbose_name_plural = 'student answers'
+        unique_together = ('student', 'test', 'question','answer')
+
 class TestUserAssignment(models.Model):
     """
     Model stores assignments as a combination of user_id and test_id, the idea
