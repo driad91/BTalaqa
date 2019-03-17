@@ -244,19 +244,22 @@ def assign_users(request):
     :param request:
     :return:
     """
+    assignments_all_existing = TestUserAssignment.objects.all()
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = AssignmentsForm(request.POST)
         # check whether it's valid:
+
         if form.is_valid():
             assignment_form = form.save()
+            assignments_all_existing = TestUserAssignment.objects.all()
             return render(request, 'teachers/assign-users-tests.html',
-                          {'form': form})
+                          {'form': form, 'existing_assignments': assignments_all_existing})
         else:
             return render(request, 'teachers/assign-users-tests.html',
-                          {'form': form})
+                          {'form': form, 'existing_assignments': assignments_all_existing})
 
     else:
         form = AssignmentsForm()
         return render(request, 'teachers/assign-users-tests.html',
-                      {'form': form})
+                      {'form': form, 'existing_assignments': assignments_all_existing})

@@ -75,15 +75,19 @@ class StudentTestAnswers (models.Model):
         verbose_name_plural = 'student answers'
         unique_together = ('student', 'test', 'question','answer')
 
+
 class TestUserAssignment(models.Model):
+
     """
     Model stores assignments as a combination of user_id and test_id, the idea
     is that teachers assign tests to students in a many to many relationship
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='student')
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    #teacher = models.ForeignKey(User, on_delete=models.CASCADE, related_name='teacher')
 
     class Meta:
+
         app_label = 'MCQAssignmentsApp'
         unique_together = ('user', 'test')
         permissions = (
