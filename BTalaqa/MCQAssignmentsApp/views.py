@@ -153,18 +153,19 @@ def delete_question(request, pk, question_pk):
         question = None
         answers = []
 
-    if request.method == "POST":
-        question_form = DeleteQuestion(request.POST)
-        if question_form.is_valid():
-            if question_form.cleaned_data["yes_no"]:
-                # deleting the question
-                question.delete()
-                for answer in answers:
-                    answer.delete()
+    if question is not None:
+        if request.method == "POST":
+            question_form = DeleteQuestion(request.POST)
+            if question_form.is_valid():
+                if question_form.cleaned_data["yes_no"]:
+                    # deleting the question
+                    question.delete()
+                    for answer in answers:
+                        answer.delete()
 
-                messages.warning(request, "Question was deleted =(")
-                return redirect('MCQAssignmentsApp:test_overview',
-                                pk=pk)
+                    messages.warning(request, "Question was deleted =(")
+                    return redirect('MCQAssignmentsApp:test_overview',
+                                    pk=pk)
 
     return render(request, 'teachers/delete_question.html',
                   {'question': question,
