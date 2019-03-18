@@ -192,6 +192,7 @@ def students_assignments(request):
     """
     returns view of all tests assigned to the logged in student and renders the
     template
+
     :param request: http request
     :return: template
     """
@@ -204,7 +205,7 @@ def students_assignments(request):
 
 @login_required
 @permission_required('MCQAssignmentsApp.read_test')
-def render_test(request, id):
+def render_test(request, pk):
     """
     renders any chosen test by the user in the form of a test
 
@@ -212,11 +213,11 @@ def render_test(request, id):
     :param id: id of the test to be rendered
     :return:
     """
-    relevant_questions = Question.objects.filter(test=id)
-    relevant_answers =Answer.objects.filter(question__in=relevant_questions.values_list('id', flat=True))
+    relevant_questions = Question.objects.filter(test=pk)
+    relevant_answers = Answer.objects.filter(question__in=relevant_questions.values_list('id', flat=True))
     return render(request, 'students/selected-test.html', context={'questions': relevant_questions.values(),
                                                                    'answers': relevant_answers.values(),
-                                                                   'test_id': id})
+                                                                   'test_id': pk})
 
 
 @login_required
@@ -258,6 +259,7 @@ def submit_test(request):
                          'corrections_dict': corrections_dict})
 
 
+@login_required
 def assign_users(request):
     """
     render html to assign users to test
@@ -265,14 +267,16 @@ def assign_users(request):
     :return:
     """
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
         form = AssignmentsForm(request.POST)
-        # check whether it's valid:
         if form.is_valid():
-            assignment_form = form.save()
+            form.save()
+            messages.info(request, "Student {} was assigned a test {}".format(form.cleaned_data["user"],
+                                                                              form.cleaned_data["test"]))
             return render(request, 'teachers/assign-users-tests.html',
                           {'form': form})
         else:
+            messages.info(request, "Student {} is already assigned this test {}".format(form.cleaned_data["user"],
+                                                                                     form.cleaned_data["test"]))
             return render(request, 'teachers/assign-users-tests.html',
                           {'form': form})
 
