@@ -10,6 +10,7 @@ from django.forms import formset_factory
 from MCQAssignmentsApp.helpers import test_helper
 import json
 
+
 @login_required
 @permission_required('MCQAssignmentsApp.edit_test')
 def create_test(request):
@@ -69,22 +70,33 @@ def create_questions_answers(request, pk):
             valid = True
             question = question_form.save()
 
+            valid_answers = []
+            one_correct = False
             for answer_form in answer_forms:
                 if answer_form.is_valid():
+                    if answer_form.cleaned_data["is_correct"]:
+                        one_correct = True
                     answer_form = answer_form.save(commit=False)
                     answer_form.question = question
-                    answer_form.save()
-                    test_current = Test.objects.get(pk=pk)
-                    question.test.add(test_current)
+                    valid_answers.append(answer_form)
+
                 else:
                     valid = False
-            if valid:
-                messages.info(request, "Question {} created".format(len(questions)))
-                # go to the next answer
-                return redirect('MCQAssignmentsApp:create_question_answers',
-                                pk=pk)
+
+            if one_correct:
+                if valid:
+                    # only if everything is valid and there is one correct answer -> save
+                    for answer_form in valid_answers:
+                        answer_form.save()
+                        test_current = Test.objects.get(pk=pk)
+                        question.test.add(test_current)
+
+                    messages.info(request, "Question {} created".format(len(questions)))
+
+                else:
+                    messages.warning(request, "One of the forms is not valid")
             else:
-                messages.warning(request, "One of the forms is not valid")
+                    messages.warning(request, "At least one answer must be correct")
 
     return render(request, 'teachers/questions-answers-creation.html',
                   {'question_form': QuestionForm,
@@ -184,14 +196,17 @@ def students_assignments(request):
     """
 
     user_tests = TestUserAssignment.objects.filter(user__username=request.user)\
-        .values('test_id','test_id__name')
+        .values('test_id', 'test_id__name')
     return render(request, 'students/students-assigned-tests.html',
                   context={'user_tests': user_tests})
+
+
 @login_required
 @permission_required('MCQAssignmentsApp.read_test')
 def render_test(request, id):
     """
     renders any chosen test by the user in the form of a test
+
     :param request: http request
     :param id: id of the test to be rendered
     :return:
@@ -201,6 +216,8 @@ def render_test(request, id):
     return render(request, 'students/selected-test.html', context={'questions': relevant_questions.values(),
                                                                    'answers': relevant_answers.values(),
                                                                    'test_id': id})
+
+
 @login_required
 @permission_required('MCQAssignmentsApp.read_test')
 def submit_test(request):
@@ -209,6 +226,7 @@ def submit_test(request):
     of the students answers, removing test as an assignment to this student
     and checks if the answers for this test were already in the database,
     and if so deletes them and updates them with the new values
+
     :param request: Ajax request
     :return: Msg, containing the score of the student
     """
@@ -237,6 +255,7 @@ def submit_test(request):
         (student_answers=student_answers_dict, model_answers=correct_answers)
     return JsonResponse({'percentage': percentage*100,
                          'corrections_dict': corrections_dict})
+
 
 def assign_users(request):
     """
