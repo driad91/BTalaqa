@@ -205,7 +205,7 @@ def students_assignments(request):
 
 @login_required
 @permission_required('MCQAssignmentsApp.read_test')
-def render_test(request, pk):
+def render_test(request, id):
     """
     renders any chosen test by the user in the form of a test
 
@@ -213,11 +213,11 @@ def render_test(request, pk):
     :param id: id of the test to be rendered
     :return:
     """
-    relevant_questions = Question.objects.filter(test=pk)
+    relevant_questions = Question.objects.filter(test=id)
     relevant_answers = Answer.objects.filter(question__in=relevant_questions.values_list('id', flat=True))
     return render(request, 'students/selected-test.html', context={'questions': relevant_questions.values(),
                                                                    'answers': relevant_answers.values(),
-                                                                   'test_id': pk})
+                                                                   'test_id': id})
 
 
 @login_required
