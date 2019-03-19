@@ -13,7 +13,7 @@ function cloneMore(selector, prefix) {
         if (name) {
             name = name.replace('-' + (total-1) + '-', '-' + total + '-');
             var id = 'id_' + name;
-            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+            $(this).attr({'name': name, 'id': id});
         }
     });
     total++;

@@ -15,8 +15,16 @@
 import os
 import sys
 from pathlib import Path
+import django
+
 p = os.path.join(Path(__file__).parents[2], 'BTalaqa')
 sys.path.insert(0, p)
+
+sys.path.insert(0, os.path.join(os.path.abspath('.'), '../../BTalaqa'))    # <•• 1
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'BTalaqa.settings'                  # <•• 2
+
+django.setup()
 
 # -- Project information -----------------------------------------------------
 

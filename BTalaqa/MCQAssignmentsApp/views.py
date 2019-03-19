@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from MCQAssignmentsApp.forms.forms import TestForm, QuestionForm, AnswerForm, DeleteQuestion, AssignmentsForm
-from MCQAssignmentsApp.models import Test, Question, Answer, StudentTestAnswers, TestUserAssignment
+from MCQAssignmentsApp.models import Test, Question, Answer, StudentTestAnswers, TestUserAssignment,AssignmentCreator
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -9,6 +9,7 @@ from django.forms import formset_factory
 
 from MCQAssignmentsApp.helpers import test_helper
 import json
+
 
 @login_required
 @permission_required('MCQAssignmentsApp.edit_test')
@@ -69,22 +70,33 @@ def create_questions_answers(request, pk):
             valid = True
             question = question_form.save()
 
+            valid_answers = []
+            one_correct = False
             for answer_form in answer_forms:
                 if answer_form.is_valid():
+                    if answer_form.cleaned_data["is_correct"]:
+                        one_correct = True
                     answer_form = answer_form.save(commit=False)
                     answer_form.question = question
-                    answer_form.save()
-                    test_current = Test.objects.get(pk=pk)
-                    question.test.add(test_current)
+                    valid_answers.append(answer_form)
+
                 else:
                     valid = False
-            if valid:
-                messages.info(request, "Question {} created".format(len(questions)))
-                # go to the next answer
-                return redirect('MCQAssignmentsApp:create_question_answers',
-                                pk=pk)
+
+            if one_correct:
+                if valid:
+                    # only if everything is valid and there is one correct answer -> save
+                    for answer_form in valid_answers:
+                        answer_form.save()
+                        test_current = Test.objects.get(pk=pk)
+                        question.test.add(test_current)
+
+                    messages.info(request, "Question {} created".format(len(questions)))
+
+                else:
+                    messages.warning(request, "One of the forms is not valid")
             else:
-                messages.warning(request, "One of the forms is not valid")
+                    messages.warning(request, "At least one answer must be correct")
 
     return render(request, 'teachers/questions-answers-creation.html',
                   {'question_form': QuestionForm,
@@ -141,18 +153,19 @@ def delete_question(request, pk, question_pk):
         question = None
         answers = []
 
-    if request.method == "POST":
-        question_form = DeleteQuestion(request.POST)
-        if question_form.is_valid():
-            if question_form.cleaned_data["yes_no"]:
-                # deleting the question
-                question.delete()
-                for answer in answers:
-                    answer.delete()
+    if question is not None:
+        if request.method == "POST":
+            question_form = DeleteQuestion(request.POST)
+            if question_form.is_valid():
+                if question_form.cleaned_data["yes_no"]:
+                    # deleting the question
+                    question.delete()
+                    for answer in answers:
+                        answer.delete()
 
-                messages.warning(request, "Question was deleted =(")
-                return redirect('MCQAssignmentsApp:test_overview',
-                                pk=pk)
+                    messages.warning(request, "Question was deleted =(")
+                    return redirect('MCQAssignmentsApp:test_overview',
+                                    pk=pk)
 
     return render(request, 'teachers/delete_question.html',
                   {'question': question,
@@ -179,28 +192,34 @@ def students_assignments(request):
     """
     returns view of all tests assigned to the logged in student and renders the
     template
+
     :param request: http request
     :return: template
     """
 
     user_tests = TestUserAssignment.objects.filter(user__username=request.user)\
-        .values('test_id','test_id__name')
+        .values('test_id', 'test_id__name')
     return render(request, 'students/students-assigned-tests.html',
                   context={'user_tests': user_tests})
+
+
 @login_required
 @permission_required('MCQAssignmentsApp.read_test')
 def render_test(request, id):
     """
     renders any chosen test by the user in the form of a test
+
     :param request: http request
     :param id: id of the test to be rendered
     :return:
     """
     relevant_questions = Question.objects.filter(test=id)
-    relevant_answers =Answer.objects.filter(question__in=relevant_questions.values_list('id', flat=True))
+    relevant_answers = Answer.objects.filter(question__in=relevant_questions.values_list('id', flat=True))
     return render(request, 'students/selected-test.html', context={'questions': relevant_questions.values(),
                                                                    'answers': relevant_answers.values(),
                                                                    'test_id': id})
+
+
 @login_required
 @permission_required('MCQAssignmentsApp.read_test')
 def submit_test(request):
@@ -209,6 +228,7 @@ def submit_test(request):
     of the students answers, removing test as an assignment to this student
     and checks if the answers for this test were already in the database,
     and if so deletes them and updates them with the new values
+
     :param request: Ajax request
     :return: Msg, containing the score of the student
     """
@@ -238,24 +258,38 @@ def submit_test(request):
     return JsonResponse({'percentage': percentage*100,
                          'corrections_dict': corrections_dict})
 
+
+@login_required
 def assign_users(request):
     """
     render html to assign users to test
     :param request:
     :return:
     """
-    assignments_all_existing = TestUserAssignment.objects.all()
+    teacher_created_assignments = AssignmentCreator.objects.filter(teacher=request.user)
+    assignments_all_existing = TestUserAssignment.objects.filter(
+        pk__in=teacher_created_assignments.values_list('assignment', flat=True))
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
         form = AssignmentsForm(request.POST)
-        # check whether it's valid:
-
         if form.is_valid():
             assignment_form = form.save()
-            assignments_all_existing = TestUserAssignment.objects.all()
+            teacher = request.user
+            creation = AssignmentCreator.objects.create(teacher=teacher,
+                                                        assignment=assignment_form)
+            creation.save()
+            teacher_created_assignments = \
+                AssignmentCreator.objects.filter(teacher=request.user)
+            assignments_all_existing = TestUserAssignment.objects.filter(
+                pk__in=teacher_created_assignments.values_list('assignment', flat=True))
+
+
+            messages.info(request, "Student {} was assigned a test {}".format(form.cleaned_data["user"],
+                                                                              form.cleaned_data["test"]))
             return render(request, 'teachers/assign-users-tests.html',
                           {'form': form, 'existing_assignments': assignments_all_existing})
         else:
+            messages.info(request, "Student {} is already assigned this test {}".format(form.cleaned_data["user"],
+                                                                                     form.cleaned_data["test"]))
             return render(request, 'teachers/assign-users-tests.html',
                           {'form': form, 'existing_assignments': assignments_all_existing})
 
