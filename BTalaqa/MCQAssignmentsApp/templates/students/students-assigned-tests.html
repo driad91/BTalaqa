@@ -1,21 +1,32 @@
 {% extends 'common/base.html' %}
 
 {% block content %}
-<br>
-<b> Tests </b>
+
 {% if user_tests.all %}
 
-<ul>
-{% for test in user_tests %}
 
-    <li><a href={% url 'MCQAssignmentsApp:render_test' test.test_id %}> {{ test.test_id__name }} </a> </li>
+<div class="row">
+    <div class="col-10 offset-1">
+        <h2> Your tests: </h2>
+        <ul class="list-group">
+        {% for test in user_tests %}
 
-{% endfor %}
-</ul>
+            <li class="list-group-item"><a href={% url 'MCQAssignmentsApp:render_test' test.test_id %}> {{ test.test_id__name }} </a> </li>
+
+        {% endfor %}
+        </ul>
+    </div>
+</div>
 
 {% else %}
 
-There are currently no tests assigned to you :(! ...explore available tests?!
+<div class="row">
+    <div class="col-10 offset-1">
+        <p>
+            There are currently no tests assigned to you :(! ...explore available tests?!
+        </p>
+    </div>
+</div>
 
 {% endif %}
 

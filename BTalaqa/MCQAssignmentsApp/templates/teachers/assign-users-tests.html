@@ -1,9 +1,13 @@
 {% extends 'common/base.html' %}
 {% block content %}
-<br>
-<form action="assign_users_tests" method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit">
-</form>
+
+<div class="row">
+    <div class="col-10 offset-1">
+        <form action="assign_users_tests" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input class="btn btn-danger" type="submit" value="Submit">
+        </form>
+    </div>
+</div>
 {% endblock %}

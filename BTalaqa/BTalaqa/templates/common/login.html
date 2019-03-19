@@ -1,6 +1,7 @@
+<!DOCTYPE html>
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
-
 </head>
 
 <body>
@@ -18,20 +19,20 @@
 
     <div class="page-header">
         <div class="row">
-            <div class="col-8">
+            <div class="col-8 offset-1">
                 <h1><div class="font-ostrich-sans"> <i class="fas fa-language"> </i> BTalaقa</div></h1>
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-8">
+        <div class="col-10 offset-1" align="center">
           {% block content %}
             <h2>Login</h2>
             <form method="post">
               {% csrf_token %}
               {{ form.as_p }}
-              <button type="submit">Login</button>
+              <button class="btn btn-danger" type="submit">Login</button>
             </form>
           {% endblock %}
 
