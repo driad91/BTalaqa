@@ -45,9 +45,15 @@ $(document).ready(function() {
                 for (var index in corrections) {
                     //var correctionsArray = corrections[index].split(',');
                     var chosenAnswer = corrections[index][0];
-                    var correctAnswer = corrections[index][1];
-
-                    if (chosenAnswer == correctAnswer) {
+                    var correctAnswers = [];
+                    counter = 1
+                    while (counter < corrections[index].length)
+                    {
+                      correctAnswers.push(corrections[index][counter]);
+                    counter++;
+                    }
+                    console.debug(correctAnswers);
+                if (correctAnswers[0].includes(chosenAnswer)) {
                         $('#correction_div_' + index.toString() + '_' + chosenAnswer.toString()).append("<i class ='fas fa-check'> </i>");
 
 
@@ -55,7 +61,7 @@ $(document).ready(function() {
                         var correctAnswerDiv = "<div class='correct-answer'> <b> Correct Answer </b> </div>"
 
                         $('#correction_div_' + index.toString() + '_' + chosenAnswer.toString()).append("<i class ='fas fa-times-circle'> </i>");
-                        $('#correction_div_' + index.toString() + '_' + correctAnswer.toString()).append(correctAnswerDiv);
+                        $('#correction_div_' + index.toString() + '_' + correctAnswers[0].toString()).append(correctAnswerDiv);
 
 
 
