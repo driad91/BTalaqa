@@ -74,5 +74,4 @@ class AssignmentsForm(ModelForm):
     """
     class Meta:
         model = TestUserAssignment
-        fields = '__all__'
-
+        fields = ['user', 'test']

@@ -75,7 +75,9 @@ class StudentTestAnswers (models.Model):
         verbose_name_plural = 'student answers'
         unique_together = ('student', 'test', 'question','answer')
 
+
 class TestUserAssignment(models.Model):
+
     """
     Model stores assignments as a combination of user_id and test_id, the idea
     is that teachers assign tests to students in a many to many relationship
@@ -84,6 +86,7 @@ class TestUserAssignment(models.Model):
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
 
     class Meta:
+
         app_label = 'MCQAssignmentsApp'
         unique_together = ('user', 'test')
         permissions = (
@@ -92,3 +95,14 @@ class TestUserAssignment(models.Model):
         )
         verbose_name = 'user_test'
         verbose_name_plural = 'user_tests'
+
+
+class AssignmentCreator(models.Model):
+
+    """
+    Model to Store the user, i.e. the teacher, who created the assignment,
+    due to django limitations on storing more than one foreign key to the
+    same model in one table.
+    """
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
+    assignment = models.ForeignKey(TestUserAssignment, on_delete=models.CASCADE)

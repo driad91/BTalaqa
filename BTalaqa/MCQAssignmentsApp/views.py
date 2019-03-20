@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from MCQAssignmentsApp.forms.forms import TestForm, QuestionForm, AnswerForm, DeleteQuestion, AssignmentsForm
-from MCQAssignmentsApp.models import Test, Question, Answer, StudentTestAnswers, TestUserAssignment
+from MCQAssignmentsApp.models import Test, Question, Answer, StudentTestAnswers, TestUserAssignment,AssignmentCreator
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -266,21 +266,34 @@ def assign_users(request):
     :param request:
     :return:
     """
+    teacher_created_assignments = AssignmentCreator.objects.filter(teacher=request.user)
+    assignments_all_existing = TestUserAssignment.objects.filter(
+        pk__in=teacher_created_assignments.values_list('assignment', flat=True))
     if request.method == 'POST':
         form = AssignmentsForm(request.POST)
         if form.is_valid():
-            form.save()
+            assignment_form = form.save()
+            teacher = request.user
+            creation = AssignmentCreator.objects.create(teacher=teacher,
+                                                        assignment=assignment_form)
+            creation.save()
+            teacher_created_assignments = \
+                AssignmentCreator.objects.filter(teacher=request.user)
+            assignments_all_existing = TestUserAssignment.objects.filter(
+                pk__in=teacher_created_assignments.values_list('assignment', flat=True))
+
+
             messages.info(request, "Student {} was assigned a test {}".format(form.cleaned_data["user"],
                                                                               form.cleaned_data["test"]))
             return render(request, 'teachers/assign-users-tests.html',
-                          {'form': form})
+                          {'form': form, 'existing_assignments': assignments_all_existing})
         else:
             messages.info(request, "Student {} is already assigned this test {}".format(form.cleaned_data["user"],
                                                                                      form.cleaned_data["test"]))
             return render(request, 'teachers/assign-users-tests.html',
-                          {'form': form})
+                          {'form': form, 'existing_assignments': assignments_all_existing})
 
     else:
         form = AssignmentsForm()
         return render(request, 'teachers/assign-users-tests.html',
-                      {'form': form})
+                      {'form': form, 'existing_assignments': assignments_all_existing})
