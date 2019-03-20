@@ -6,4 +6,20 @@
     {{ form }}
     <input type="submit" value="Submit">
 </form>
+
+
+
+<b> Assignments Created</b>
+<table class="table">
+    <th>User</th>
+    <th>Test</th>
+        {% for assignment in existing_assignments %}
+    <tr>
+        <td>{{ assignment.user }}</td>
+        <td>{{ assignment.test }}</td>
+
+    </tr>
+    {% endfor %}
+</table>
+
 {% endblock %}
