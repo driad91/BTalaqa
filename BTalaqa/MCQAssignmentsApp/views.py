@@ -263,6 +263,7 @@ def submit_test(request):
 def assign_users(request):
     """
     render html to assign users to test
+
     :param request:
     :return:
     """
@@ -282,18 +283,13 @@ def assign_users(request):
             assignments_all_existing = TestUserAssignment.objects.filter(
                 pk__in=teacher_created_assignments.values_list('assignment', flat=True))
 
-
             messages.info(request, "Student {} was assigned a test {}".format(form.cleaned_data["user"],
                                                                               form.cleaned_data["test"]))
-            return render(request, 'teachers/assign-users-tests.html',
-                          {'form': form, 'existing_assignments': assignments_all_existing})
         else:
             messages.info(request, "Student {} is already assigned this test {}".format(form.cleaned_data["user"],
                                                                                      form.cleaned_data["test"]))
-            return render(request, 'teachers/assign-users-tests.html',
-                          {'form': form, 'existing_assignments': assignments_all_existing})
 
     else:
         form = AssignmentsForm()
-        return render(request, 'teachers/assign-users-tests.html',
-                      {'form': form, 'existing_assignments': assignments_all_existing})
+    return render(request, 'teachers/assign-users-tests.html',
+                  {'form': form, 'existing_assignments': assignments_all_existing})

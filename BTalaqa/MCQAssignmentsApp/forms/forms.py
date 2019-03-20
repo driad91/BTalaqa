@@ -69,6 +69,8 @@ class AssignmentsForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(AssignmentsForm, self).__init__(*args, **kwargs)  # populates the post
         self.fields['user'].queryset = User.objects.filter(groups__name__in=['Students'])
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
     """
     Test Form
     """
