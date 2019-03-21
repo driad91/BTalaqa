@@ -1,25 +1,38 @@
 {% extends 'common/base.html' %}
 {% block content %}
-<br>
-<form action="assign_users_tests" method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit">
-</form>
+
+<div class="row">
+    <div class="col-10 offset-1" align="center">
+        <form action="assign_users_tests" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input class="btn btn-danger" type="submit" value="Submit">
+        </form>
+    </div>
+</div>
 
 
+<div class="row">
+    <div class="col-10 offset-1">
+        <h2> Assignments Created</h2>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>User</th>
+                    <th>Test</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for assignment in existing_assignments %}
+                <tr>
+                    <td>{{ assignment.user }}</td>
+                    <td>{{ assignment.test }}</td>
 
-<b> Assignments Created</b>
-<table class="table">
-    <th>User</th>
-    <th>Test</th>
-        {% for assignment in existing_assignments %}
-    <tr>
-        <td>{{ assignment.user }}</td>
-        <td>{{ assignment.test }}</td>
-
-    </tr>
-    {% endfor %}
-</table>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 {% endblock %}
