@@ -12,7 +12,7 @@ class TestForm(ModelForm):
 
     class Meta:
         model = Test
-        fields = ['name']
+        fields = ['name', 'tag']
         widgets = {
             'name': TextInput,
         }
@@ -23,6 +23,11 @@ class TestForm(ModelForm):
         help_texts = {
             'name': 'Please enter the test name here'
         }
+
+    def __init__(self, *args, **kwargs):
+        super(TestForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
 
 
 class AnswerForm(ModelForm):
@@ -59,9 +64,19 @@ class QuestionForm(ModelForm):
             'text': TextInput,
         }
 
+    def __init__(self, *args, **kwargs):
+        super(QuestionForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+
 
 class DeleteQuestion(Form):
     yes_no = BooleanField(label='Are you sure?')
+
+    def __init__(self, *args, **kwargs):
+        super(DeleteQuestion, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
 
 
 class AssignmentsForm(ModelForm):
@@ -71,9 +86,7 @@ class AssignmentsForm(ModelForm):
         self.fields['user'].queryset = User.objects.filter(groups__name__in=['Students'])
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-    """
-    Test Form
-    """
+
     class Meta:
         model = TestUserAssignment
         fields = ['user', 'test']

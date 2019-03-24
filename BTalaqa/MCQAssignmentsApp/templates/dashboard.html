@@ -9,7 +9,7 @@
 
         <ul class="list-group">
             {% for test in tests %}
-             <a class="list-group-item" href={% url 'MCQAssignmentsApp:test_overview' pk=test.id %}> {{ test.name }}</a>
+             <li class="list-group-item" > <a href={% url 'MCQAssignmentsApp:test_overview' pk=test.id %}> {{ test.name }}</a> <div class="d-inline bg-success" >{{ test.get_tag_display }}</div>  </li>
             {% endfor %}
         </ul>
     </div>

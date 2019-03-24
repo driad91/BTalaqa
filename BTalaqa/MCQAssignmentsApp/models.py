@@ -8,8 +8,15 @@ class Test(models.Model):
     questions to be able to create different tests as different combinations
     of different already existing questions
     """
+    TAGS_CHOICES = (
+        ('Gr', 'Grammar'),
+        ('G', 'General'),
+        ('O', 'Other')
+    )
+
     name = models.CharField(max_length=255, blank=False)
     assignment = models.ManyToManyField('auth.User', through='TestUserAssignment', related_name='assignment')
+    tag = models.CharField(max_length=255, choices=TAGS_CHOICES)
 
     class Meta:
         app_label = 'MCQAssignmentsApp'
