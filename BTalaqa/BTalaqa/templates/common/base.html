@@ -11,8 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/vendors/bootstrap/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/vendors/ostrich-sans/webfonts/ostrich-sans.css' %}">
     <link rel="stylesheet" href="{% static 'css/custom/base-custom.css' %}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.1/css/all.css">
 
     <script src="{% static 'js/vendors/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/vendors/bootstrap/bootstrap.min.js' %}"></script>
@@ -20,7 +19,7 @@
     <div class="page-header">
         <div class="row">
             <div class="col-8">
-                <h1><div class="font-ostrich-sans"> <i class="fas fa-language"> </i> BTalaقa</div></h1>
+                <h1><div class="font-ostrich-sans"> <i class="fa fa-language"> </i> BTalaقa</div></h1>
             </div>
             <div class="col-4 text-right">
                 {{ user.get_username }}
@@ -45,10 +44,10 @@
                     <a class="nav-link " href={% url 'MCQAssignmentsApp:create_test' %}> <i class="fa fa-file"></i> Create Test<span class="sr-only">(current)</span></a>
                   </li>
                   <li class="nav-item active">
-                    <a class="nav-link" href={% url 'MCQAssignmentsApp:assign_users_tests' %}> <i class="fas fa-hands-helping"></i> Assign Tests<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href={% url 'MCQAssignmentsApp:assign_users_tests' %}> <i class="fa fa-handshake"></i> Assign Tests<span class="sr-only">(current)</span></a>
                   </li>
                   <li class="nav-item active">
-                    <a class="nav-link" href={% url 'MCQAssignmentsApp:dashboard' %}><i class="fas fa-tachometer-alt"></i> Dashboard<span class="sr-only"></span></a>
+                    <a class="nav-link" href={% url 'MCQAssignmentsApp:dashboard' %}><i class="fa fa-tachometer-alt"></i> Edit Tests<span class="sr-only"></span></a>
                   </li>
 
         {% else %}
