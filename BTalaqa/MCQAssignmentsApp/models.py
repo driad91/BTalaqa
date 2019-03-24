@@ -11,12 +11,22 @@ class Test(models.Model):
     TAGS_CHOICES = (
         ('Gr', 'Grammar'),
         ('G', 'General'),
+        ('R', 'Reading'),
         ('O', 'Other')
+    )
+
+    TAGS_COLORS = (
+        ('primary', 'primary'),
+        ('secondary', 'secondary'),
+        ('success', 'success'),
+        ('danger', 'danger'),
+        ('warning', 'warning')
     )
 
     name = models.CharField(max_length=255, blank=False)
     assignment = models.ManyToManyField('auth.User', through='TestUserAssignment', related_name='assignment')
     tag = models.CharField(max_length=255, choices=TAGS_CHOICES)
+    tag_color = models.CharField(max_length=255, choices=TAGS_COLORS)
 
     class Meta:
         app_label = 'MCQAssignmentsApp'

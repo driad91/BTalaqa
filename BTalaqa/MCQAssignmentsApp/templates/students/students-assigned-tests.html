@@ -1,9 +1,15 @@
 {% extends 'common/base.html' %}
+{% load static %}
+
+{% block scripts %}
+
+<script src="{% static 'js/custom/students/students-assigned-tests.js' %}"></script>
+
+{% endblock %}
 
 {% block content %}
 
 {% if user_tests.all %}
-
 
 <div class="row">
     <div class="col-10 offset-1">
@@ -11,7 +17,7 @@
         <ul class="list-group">
         {% for test in user_tests %}
 
-            <li class="list-group-item"><a href={% url 'MCQAssignmentsApp:render_test' test.test_id %}> {{ test.test_id__name }} </a> </li>
+            <li class="list-group-item"> <a href={% url 'MCQAssignmentsApp:render_test' test.test.id %}> {{ test.test.name }} </a> | <div class="d-inline bg-{{test.test.tag_color}}" >{{ test.test.get_tag_display }} </div>  </li>
 
         {% endfor %}
         </ul>
@@ -27,12 +33,25 @@
         </p>
     </div>
 </div>
-
 {% endif %}
+<br>
+<hr>
+<div class="row">
+    <div class="col-2 offset-1">
+        <button id="explore_tests" class="btn btn-primary"> explore more tests </button>
+    </div>
+</div>
+<hr>
+<div id="all_tests" class="row hidden">
+    <div class="col-10 offset-1">
+        <h2> All tests: </h2>
+        <ul class="list-group">
+        {% for test in all_tests %}
 
+            <li class="list-group-item"> <a href={% url 'MCQAssignmentsApp:render_test' test.id %}> {{ test.name }} </a> | <div class="d-inline bg-{{test.tag_color}}" >{{ test.get_tag_display }} </div>  </li>
 
-
-
-
-
+        {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock %}

@@ -197,10 +197,11 @@ def students_assignments(request):
     :return: template
     """
 
-    user_tests = TestUserAssignment.objects.filter(user__username=request.user)\
-        .values('test_id', 'test_id__name')
+    user_tests = TestUserAssignment.objects.filter(user__username=request.user)
+    all_tests = Test.objects.all()
     return render(request, 'students/students-assigned-tests.html',
-                  context={'user_tests': user_tests})
+                  context={'user_tests': user_tests,
+                           'all_tests': all_tests})
 
 
 @login_required

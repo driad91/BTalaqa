@@ -12,7 +12,7 @@ class TestForm(ModelForm):
 
     class Meta:
         model = Test
-        fields = ['name', 'tag']
+        fields = ['name', 'tag', 'tag_color']
         widgets = {
             'name': TextInput,
         }
