@@ -8,13 +8,6 @@ class Test(models.Model):
     questions to be able to create different tests as different combinations
     of different already existing questions
     """
-    TAGS_CHOICES = (
-        ('Gr', 'Grammar'),
-        ('G', 'General'),
-        ('R', 'Reading'),
-        ('O', 'Other')
-    )
-
     TAGS_COLORS = (
         ('primary', 'primary'),
         ('secondary', 'secondary'),
@@ -25,7 +18,7 @@ class Test(models.Model):
 
     name = models.CharField(max_length=255, blank=False)
     assignment = models.ManyToManyField('auth.User', through='TestUserAssignment', related_name='assignment')
-    tag = models.CharField(max_length=255, choices=TAGS_CHOICES)
+    tag = models.CharField(max_length=255, blank=False)
     tag_color = models.CharField(max_length=255, choices=TAGS_COLORS)
 
     class Meta:
