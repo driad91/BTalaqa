@@ -13,10 +13,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 from django.contrib.messages import constants as messages
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+#PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -29,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1',
                  'localhost',
-                 '192.168.178.26']
+                 '192.168.178.26',
+                 'driad.eu.pythonanywhere.com']
 
 
 # Application definition
@@ -59,9 +59,8 @@ ROOT_URLCONF = 'BTalaqa.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['MCQAssignmentsApp/templates',
-                 'BTalaqa/templates',
-                 'AssignmentsApp/templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'MCQAssignmentsApp/templates'),
+                 os.path.join(BASE_DIR, 'BTalaqa/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,7 +72,6 @@ TEMPLATES = [
         },
     },
 ]
-
 WSGI_APPLICATION = 'BTalaqa.wsgi.application'
 
 
@@ -124,7 +122,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    "/MCQAssignmentsApp/static"
+    os.path.join(BASE_DIR, "MCQAssignmentsApp/static")
 ]
 
 LOGIN_REDIRECT_URL ='home'
@@ -141,5 +139,7 @@ MESSAGE_TAGS = {
 }
 
 FIXTURE_DIRS = (
-   '/MCQAssignmentsApp/fixtures/',
+   os.path.join(BASE_DIR, '/MCQAssignmentsApp/fixtures/'),
 )
+
+STATIC_ROOT = os.path.join(BASE_DIR, "allstaticfiles")
