@@ -4,23 +4,15 @@
 
 
 <div class="row">
-    <div class="col-10 offset/1">
+    <div class="col-10 offset-1">
         <h2>All Tests</h2>
 
         <ul class="list-group">
             {% for test in tests %}
-             <a class="list-group-item" href={% url 'MCQAssignmentsApp:test_overview' pk=test.id %}> {{ test.name }}</a>
+             <li class="list-group-item" > <a href={% url 'MCQAssignmentsApp:test_overview' pk=test.id %}> {{ test.name }}</a> | <div class="d-inline bg-{{test.tag_color}}" >{{ test.tag }}</div>  </li>
             {% endfor %}
         </ul>
     </div>
 </div>
-
-<ul class="list-group">
-        {% for test in user_tests %}
-
-            <li class="list-group-item"><a href={% url 'MCQAssignmentsApp:render_test' test.test_id %}> {{ test.test_id__name }} </a> </li>
-
-        {% endfor %}
-        </ul>
 
 {% endblock %}
