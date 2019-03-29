@@ -1,6 +1,7 @@
 {% extends 'common/base.html' %}
 {% load static %}
 {% block content %}
+<script src="{% static 'js/custom/teachers/DeleteTest.js' %}"></script>
 
 
 <div class="row">
@@ -9,7 +10,7 @@
 
         <ul class="list-group">
             {% for test in tests %}
-             <li class="list-group-item" > <a href={% url 'MCQAssignmentsApp:test_overview' pk=test.id %}> {{ test.name }}</a> | <div class="d-inline bg-{{test.tag_color}}" >{{ test.tag }}</div>  </li>
+             <li class="list-group-item" > <a href={% url 'MCQAssignmentsApp:test_overview' pk=test.id %}> {{ test.name }}</a> | <div class="d-inline bg-{{test.tag_color}}" >{{ test.tag }} </div> | <a id="delete-test-link" href="{% url 'MCQAssignmentsApp:delete_test' pk=test.id %}"> X </a>   </li>
             {% endfor %}
         </ul>
     </div>

@@ -293,3 +293,14 @@ def assign_users(request):
         form = AssignmentsForm()
     return render(request, 'teachers/assign-users-tests.html',
                   {'form': form, 'existing_assignments': assignments_all_existing})
+@login_required
+@permission_required('MCQAssignmentsApp.edit_test')
+def delete_test(request, pk):
+    try:
+        Test.objects.filter(pk=pk).delete()
+    except ObjectDoesNotExist:
+        messages.info(request, "There is no test with this id")
+
+    return render(request, 'dashboard.html',
+                  {'tests': Test.objects.all()})
+
