@@ -73,6 +73,14 @@ def create_questions_answers(request, pk):
             one_correct = False
             for answer_form in answer_forms:
                 if answer_form.is_valid():
+                    if not answer_form.cleaned_data:
+                        messages.warning(request, "One of the answer forms is not valid")
+                        return render(request, 'teachers/questions-answers-creation.html',
+                                      {'question_form': QuestionForm,
+                                       'answer_formset': answer_form_set,
+                                       'test': test,
+                                       'questions': questions
+                                       })
                     if answer_form.cleaned_data["is_correct"]:
                         one_correct = True
                     answer_form = answer_form.save(commit=False)
