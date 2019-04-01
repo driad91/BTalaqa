@@ -263,7 +263,7 @@ def submit_test(request):
         test_answer.save()
     percentage, corrections_dict = test_helper.test_correction\
         (student_answers=student_answers_dict, model_answers=correct_answers)
-    return JsonResponse({'percentage': percentage*100,
+    return JsonResponse({'percentage': int(percentage*100),
                          'corrections_dict': corrections_dict})
 
 
@@ -301,3 +301,16 @@ def assign_users(request):
         form = AssignmentsForm()
     return render(request, 'teachers/assign-users-tests.html',
                   {'form': form, 'existing_assignments': assignments_all_existing})
+
+@login_required
+
+def render_student_dashboard (request):
+    student = request.user
+    dict_scores = test_helper.test_scores_by_student(student)
+    return render(request, 'students/student-dashboard.html',
+                  context={'scores': dict_scores})
+
+
+
+
+

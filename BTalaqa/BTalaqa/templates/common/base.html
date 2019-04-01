@@ -53,7 +53,13 @@
         {% else %}
               <li class="nav-item active">
                 <a class="nav-link " href={% url 'MCQAssignmentsApp:students_assignments' %}> <i class="fa fa-file"></i> My Tests<span class="sr-only">(current)</span></a>
+
               </li>
+            <li class="nav-item active">
+             <a class="nav-link " href={% url 'MCQAssignmentsApp:render_student_dashboard' %}> <i class="fa fa-tachometer-alt"></i> My Dashboard<span class="sr-only">(current)</span></a>
+
+            </li>
+
         {% endif %}
     </ul>
     <form class="form-inline my-2 my-lg-0">
