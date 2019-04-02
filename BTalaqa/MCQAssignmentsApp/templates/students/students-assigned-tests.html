@@ -17,7 +17,7 @@
         <ul class="list-group">
         {% for test in user_tests %}
 
-            <li class="list-group-item"> <a href={% url 'MCQAssignmentsApp:render_test' test.test.id %}> {{ test.test.name }} </a> | <div class="d-inline bg-{{test.test.tag_color}}" >{{ test.test.tag }} </div>  </li>
+            <li class="list-group-item"> <a href={% url 'MCQAssignmentsApp:render_test' id=test.test.id student_id=request.user.id %}> {{ test.test.name }} </a> | <div class="d-inline bg-{{test.test.tag_color}}" >{{ test.test.tag }} </div>  </li>
 
         {% endfor %}
         </ul>
@@ -48,7 +48,7 @@
         <ul class="list-group">
         {% for test in all_tests %}
 
-            <li class="list-group-item"> <a href={% url 'MCQAssignmentsApp:render_test' test.id %}> {{ test.name }} </a> | <div class="d-inline bg-{{test.tag_color}}" >{{ test.tag }} </div>  </li>
+            <li class="list-group-item"> <a href={% url 'MCQAssignmentsApp:render_test'  id=test.id student_id=request.user.id %}> {{ test.name }} </a> | <div class="d-inline bg-{{test.tag_color}}" >{{ test.tag }} </div>  </li>
 
         {% endfor %}
         </ul>

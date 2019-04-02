@@ -1,14 +1,19 @@
 {% extends 'common/base.html' %}
 {% block content %}
 {% load static %}
+<script>
+    var student_answers = {{student_answers|safe}};
+</script>
 <script src="{% static 'js/custom/students/AjaxCsrf.js' %}"></script>
 <script src="{% static 'js/custom/students/CheckTest.js' %}"></script>
 
 <link rel="stylesheet" href="{% static 'css/custom/test-view.css' %}">
 
 <div class="row">
-    <div class="col-12">
-        <div id="test_form" test_id={{ test_id }} action="#" method="post">
+    <div class="col-10 offset-1">
+        <h3>User: {{student.username}}</h3>
+        <h3>Test: {{test.name}}</h3>
+        <div id="test_form" test_id={{ test.id }} action="#" method="post">
         {% csrf_token %}
         {% for question in questions %}
             <div class="row">
