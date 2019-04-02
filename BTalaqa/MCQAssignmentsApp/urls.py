@@ -9,7 +9,7 @@ urlpatterns = [
             , name='create_question_answers'),
     re_path('^students_assignments/', views.students_assignments
             , name='students_assignments'),
-    re_path('^render_test/(?P<id>\d+)/$', views.render_test
+    re_path('^render_test/(?P<id>\d+)/(?P<student_id>\d+)/$', views.render_test
             , name='render_test'),
     re_path('submit_test/', views.submit_test
             , name='submit_test'),

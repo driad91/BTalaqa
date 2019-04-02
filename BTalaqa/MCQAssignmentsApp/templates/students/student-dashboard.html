@@ -2,17 +2,27 @@
 {% load static %}
 
 {% block content %}
-<table class ="table">
-    <tr>
-        <td>Test</td>
-        <td>Score</td>
-    </tr>
 
-    {% for key, value in scores.items %}
-    <tr>
-        <td>{{ key }}</td>
-        <td>{{ value }}</td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="row">
+    <div class="col-10 offset-1">
+        <table class ="table">
+            <thead>
+                <tr>
+                    <td>Test</td>
+                    <td>Score</td>
+                    <td>Details</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for test, value in scores.items %}
+                <tr>
+                    <td>{{ test }}</td>
+                    <td>{{ value }}</td>
+                    <td><a href={% url 'MCQAssignmentsApp:render_test' id=test.id student_id=student_id%}> Details</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

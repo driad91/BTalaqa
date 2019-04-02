@@ -225,20 +225,43 @@ def students_assignments(request):
 
 
 @login_required
-@permission_required('MCQAssignmentsApp.read_test')
-def render_test(request, id):
+def render_test(request, id, student_id):
     """
     renders any chosen test by the user in the form of a test
 
     :param request: http request
     :param id: id of the test to be rendered
+    :param student_id: student_id
     :return:
     """
+
+    # check if student already did this test?
+    student_answers_for_this_test = StudentTestAnswers.objects.filter(test_id=id, student_id=student_id)
+    if student_answers_for_this_test:
+        student_answers_dict = dict()
+        for answ in student_answers_for_this_test.values('question_id', 'answer_id'):
+            student_answers_dict[answ["question_id"]] = answ["answer_id"]
+
+        test = Test.objects.get(pk=id)
+        correct_answers = Answer.objects.filter(is_correct=True,
+                                                question__test=test).values('id', 'question_id')
+
+        percentage, corrections_dict = test_helper.test_correction \
+            (student_answers=student_answers_dict, model_answers=correct_answers)
+        student_answers = json.dumps({"percentage": percentage,
+                                      "corrections_dict": corrections_dict})
+        messages.info(request, "You have already taken this test. Please, see below your answers.")
+    else:
+        student_answers = 0
+
     relevant_questions = Question.objects.filter(test=id)
     relevant_answers = Answer.objects.filter(question__in=relevant_questions.values_list('id', flat=True))
     return render(request, 'students/selected-test.html', context={'questions': relevant_questions.values(),
                                                                    'answers': relevant_answers.values(),
-                                                                   'test_id': id})
+                                                                   'test': Test.objects.get(id=id),
+                                                                   'student_answers': student_answers,  # this is here so that the link to the same view can be used in student-dashboard
+                                                                   'student': User.objects.get(id=student_id)
+                                                                   })
 
 
 @login_required
@@ -276,7 +299,6 @@ def submit_test(request):
         test_answer.save()
     percentage, corrections_dict = test_helper.test_correction\
         (student_answers=student_answers_dict, model_answers=correct_answers)
-
     return JsonResponse({'percentage': int(percentage*100),
                          'corrections_dict': corrections_dict})
 
@@ -362,4 +384,5 @@ def render_student_dashboard(request, user_id):
     dict_scores, all_statistics = test_helper.test_scores_by_student(student)
 
     return render(request, 'students/student-dashboard.html',
-                  context={'scores': dict_scores})
+                  context={'scores': dict_scores,
+                           'student_id': user_id})
