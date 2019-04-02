@@ -281,7 +281,7 @@ def submit_test(request):
         test_answer.save()
     percentage, corrections_dict = test_helper.test_correction\
         (student_answers=student_answers_dict, model_answers=correct_answers)
-    return JsonResponse({'percentage': percentage*100,
+    return JsonResponse({'percentage': int(percentage*100),
                          'corrections_dict': corrections_dict})
 
 
@@ -319,3 +319,48 @@ def assign_users(request):
         form = AssignmentsForm()
     return render(request, 'teachers/assign-users-tests.html',
                   {'form': form, 'existing_assignments': assignments_all_existing})
+
+
+@login_required
+@permission_required('MCQAssignmentsApp.edit_test')
+def delete_test(request, pk):
+    """
+    deletes tests and all questions and answers related to it.
+
+    :param request:
+    :param pk:
+    :return:
+    """
+    try:
+        test = Test.objects.get(pk=pk)
+    except ObjectDoesNotExist:
+        test = None
+        messages.error(request, "There is no test with this id")
+
+    if test:
+        questions = Question.objects.filter(test=test)
+        for question in questions:
+            answers = Answer.objects.filter(question=question)
+            question.delete()
+            for answer in answers:
+                answer.delete()
+        test_name = test.name
+        test.delete()
+        messages.info(request, "Test '{}' was successfully deleted!".format(test_name))
+
+    return render(request, 'dashboard.html',
+                  {'tests': Test.objects.all()})
+
+
+@login_required
+def render_student_dashboard(request):
+    """
+    student dashboard
+
+    :param request:
+    :return:
+    """
+    student = request.user
+    dict_scores = test_helper.test_scores_by_student(student)
+    return render(request, 'students/student-dashboard.html',
+                  context={'scores': dict_scores})
