@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.forms import formset_factory
 from MCQAssignmentsApp.helpers import test_helper
 import json
+from django.contrib.auth.models import User, Group
 
 
 @login_required
@@ -190,7 +191,24 @@ def dashboard(request):
     :param request:
     :return:
     """
-    return render(request, 'dashboard.html', {'tests': Test.objects.all()})
+    # query all students
+    group = Group.objects.get(name="Students")
+    students = User.objects.filter(groups=group)
+    print(students)
+
+    # What do we want to show here? (columns)
+    # user/student
+    # How many assigned tests did a student complete?
+    # How many additional tests did he complete?
+    # Average score on assigned tests? mean(correct/total)
+    # Average score on additional tests? mean(correct/total)
+    # Average score on all tests? mean(correct/total)
+    # link to individual dashboard
+
+    return render(request, 'dashboard.html',
+                  {'tests': Test.objects.all(),
+                   'students': students,
+                   })
 
 
 @login_required
