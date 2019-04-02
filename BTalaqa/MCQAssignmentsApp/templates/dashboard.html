@@ -6,9 +6,44 @@
 <script src="{% static 'js/custom/teachers/DeleteTest.js' %}"></script>
 
 
+
 <div class="row">
     <div class="col-10 offset-1">
-        <h2>All Tests</h2>
+        <h2>Students Progress</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Completed assigned tests</th>
+                    <th>Completed additional tests</th>
+                    <th>Average score on assigned</th>
+                    <th>Average score on additional</th>
+                    <th>Average score on all</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+                {% for student, student_stat in students_statistics.items %}
+                <tr>
+                    <td>{{student.username}}</td>
+                    <td>{{student_stat.number_of_completed_assigned_tests}}</td>
+                    <td>{{student_stat.number_of_completed_additional_tests}}</td>
+                    <td>{{student_stat.assigned_tests}}</td>
+                    <td>{{student_stat.additional_tests}}</td>
+                    <td>{{student_stat.all_tests}}</td>
+                    <td><a class="nav-link " href={% url 'MCQAssignmentsApp:render_student_dashboard' user_id=student.id %}> Details</a></td>
+                </tr>
+                {% endfor %}
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-10 offset-1">
+        <h2>Tests Overview</h2>
 
         <ul class="list-group">
             {% for test in tests %}

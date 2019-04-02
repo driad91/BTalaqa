@@ -194,20 +194,15 @@ def dashboard(request):
     # query all students
     group = Group.objects.get(name="Students")
     students = User.objects.filter(groups=group)
-    print(students)
+    students_statistics = dict()
 
-    # What do we want to show here? (columns)
-    # user/student
-    # How many assigned tests did a student complete?
-    # How many additional tests did he complete?
-    # Average score on assigned tests? mean(correct/total)
-    # Average score on additional tests? mean(correct/total)
-    # Average score on all tests? mean(correct/total)
-    # link to individual dashboard
+    for student in students:
+        dict_scores, all_statistics = test_helper.test_scores_by_student(student)
+        students_statistics[student] = all_statistics
 
     return render(request, 'dashboard.html',
                   {'tests': Test.objects.all(),
-                   'students': students,
+                   'students_statistics': students_statistics,
                    })
 
 
@@ -281,6 +276,7 @@ def submit_test(request):
         test_answer.save()
     percentage, corrections_dict = test_helper.test_correction\
         (student_answers=student_answers_dict, model_answers=correct_answers)
+
     return JsonResponse({'percentage': int(percentage*100),
                          'corrections_dict': corrections_dict})
 
@@ -353,14 +349,17 @@ def delete_test(request, pk):
 
 
 @login_required
-def render_student_dashboard(request):
+def render_student_dashboard(request, user_id):
     """
     student dashboard
 
     :param request:
+    :param user_id: id of the student to render dashboard for
     :return:
     """
-    student = request.user
-    dict_scores = test_helper.test_scores_by_student(student)
+
+    student = User.objects.get(pk=user_id)
+    dict_scores, all_statistics = test_helper.test_scores_by_student(student)
+
     return render(request, 'students/student-dashboard.html',
                   context={'scores': dict_scores})
