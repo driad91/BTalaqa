@@ -52,7 +52,7 @@ class AnswerForm(ModelForm):
 
 class QuestionForm(ModelForm):
     """
-    Answer Form
+    Question Form
     """
     class Meta:
         model = Question
