@@ -217,7 +217,8 @@ def students_assignments(request):
     :return: template
     """
 
-    user_tests = TestUserAssignment.objects.filter(user__username=request.user)
+    user_tests = TestUserAssignment.objects.filter(user__username=request.user,
+                                                   assignment_completed=False)
     all_tests = Test.objects.all()
     return render(request, 'students/students-assigned-tests.html',
                   context={'user_tests': user_tests,
@@ -283,9 +284,12 @@ def submit_test(request):
     test = Test.objects.get(pk=test_id)
     correct_answers = Answer.objects.filter(is_correct=True,
                                             question__test=test).values('id', 'question_id')
-    qs_assignment = TestUserAssignment.objects.filter(test=test, user=student)
+    qs_assignment = TestUserAssignment.objects.filter(test=test, user=student).values_list('id', flat=True)
     if qs_assignment.exists():
-        qs_assignment.delete()
+        assignment = TestUserAssignment.objects.get(pk=qs_assignment[0])
+        assignment.assignment_completed = True
+        assignment.save()
+        #qs_assignment.delete()
     qs = StudentTestAnswers.objects.filter(test=test, student=student)
     if qs.exists():  # if student has previous answers for this test
         qs.delete()  # delete

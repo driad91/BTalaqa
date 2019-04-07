@@ -66,7 +66,8 @@ def test_scores_by_student(student):
                         "number_of_completed_additional_tests": 0
                         }
 
-    assigned_tests_ids = tuple(map(lambda x: x.id, TestUserAssignment.objects.filter(user=student)))
+    assigned_tests_ids = TestUserAssignment.objects.filter(user=student)\
+        .values_list('test__id', flat=True)
 
     all_tests = Test.objects.all()
     tests_done_by_student = list(student_test_answers_df['test_id'].unique())
@@ -97,4 +98,5 @@ def test_scores_by_student(student):
     dashboard_scores["assigned_tests"] = pd.np.mean(dashboard_scores["assigned_tests"])
     dashboard_scores["additional_tests"] = pd.np.mean(dashboard_scores["additional_tests"])
     dashboard_scores["all_tests"] = pd.np.mean(dashboard_scores["all_tests"])
+    dashboard_scores["count_assigned_tests"] = len(assigned_tests_ids)
     return test_scores, dashboard_scores
