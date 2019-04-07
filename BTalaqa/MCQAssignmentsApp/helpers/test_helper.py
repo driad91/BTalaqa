@@ -95,8 +95,8 @@ def test_scores_by_student(student):
                 dashboard_scores["number_of_completed_additional_tests"] += 1
                 dashboard_scores["additional_tests"].append(score)
             dashboard_scores["all_tests"].append(score)
-    dashboard_scores["assigned_tests"] = pd.np.mean(dashboard_scores["assigned_tests"])
-    dashboard_scores["additional_tests"] = pd.np.mean(dashboard_scores["additional_tests"])
-    dashboard_scores["all_tests"] = pd.np.mean(dashboard_scores["all_tests"])
+    dashboard_scores["assigned_tests"] = str(int(pd.np.mean(dashboard_scores["assigned_tests"]) * 100))+ '%'
+    dashboard_scores["additional_tests"] = str(int (pd.np.mean(dashboard_scores["additional_tests"]) *100))+ '%'
+    dashboard_scores["all_tests"] = str (int(pd.np.mean(dashboard_scores["all_tests"]) *100))+ '%'
     dashboard_scores["count_assigned_tests"] = len(assigned_tests_ids)
     return test_scores, dashboard_scores
