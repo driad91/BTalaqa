@@ -19,7 +19,9 @@ urlpatterns = [
             , name='delete_question'),
     re_path('delete_test/(?P<pk>\d+)/$', views.delete_test
             , name='delete_test'),
-    re_path('^dashboard/', views.dashboard, name='dashboard'),
+    re_path('^edit_tests/', views.edit_tests, name='edit_tests'),
+    re_path('^render_teacher_dashboard/', views.render_teacher_dashboard, name='render_teacher_dashboard'),
+
     re_path('^assign_users/', views.assign_users, name='assign_users_tests'),
     re_path('^render_student_dashboard/(?P<user_id>\d+)/$', views.render_student_dashboard, name='render_student_dashboard'),
 

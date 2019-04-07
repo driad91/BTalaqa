@@ -47,7 +47,10 @@
                     <a class="nav-link" href={% url 'MCQAssignmentsApp:assign_users_tests' %}> <i class="fa fa-handshake"></i> Assign Tests<span class="sr-only">(current)</span></a>
                   </li>
                   <li class="nav-item active">
-                    <a class="nav-link" href={% url 'MCQAssignmentsApp:dashboard' %}><i class="fa fa-tachometer-alt"></i> Edit Tests<span class="sr-only"></span></a>
+                    <a class="nav-link" href={% url 'MCQAssignmentsApp:edit_tests' %}><i class="fa fa-edit"></i> Edit Tests<span class="sr-only"></span></a>
+                  </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href={% url 'MCQAssignmentsApp:render_teacher_dashboard' %}><i class="fa fa-tachometer-alt"></i> Dashboard<span class="sr-only"></span></a>
                   </li>
 
         {% else %}

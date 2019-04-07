@@ -184,7 +184,19 @@ def delete_question(request, pk, question_pk):
 
 
 @login_required
-def dashboard(request):
+def edit_tests(request):
+    """
+    Display statistic about student progress in their tests.
+
+    :param request:
+    :return:
+    """
+    return render(request, 'teachers/edit_tests.html',
+                  {'tests': Test.objects.all(),
+
+                   })
+@login_required
+def render_teacher_dashboard(request):
     """
     Display statistic about student progress in their tests.
 
@@ -200,7 +212,7 @@ def dashboard(request):
         dict_scores, all_statistics = test_helper.test_scores_by_student(student)
         students_statistics[student] = all_statistics
 
-    return render(request, 'dashboard.html',
+    return render(request, 'teachers/dashboard.html',
                   {'tests': Test.objects.all(),
                    'students_statistics': students_statistics,
                    })
@@ -370,7 +382,7 @@ def delete_test(request, pk):
         test.delete()
         messages.info(request, "Test '{}' was successfully deleted!".format(test_name))
 
-    return render(request, 'dashboard.html',
+    return render(request, 'teachers/edit_tests.html',
                   {'tests': Test.objects.all()})
 
 
