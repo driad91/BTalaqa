@@ -70,11 +70,11 @@ class QuestionForm(ModelForm):
             field.widget.attrs['class'] = 'form-control'
 
 
-class DeleteQuestion(Form):
+class YesNoForm(Form):
     yes_no = BooleanField(label='Are you sure?')
 
     def __init__(self, *args, **kwargs):
-        super(DeleteQuestion, self).__init__(*args, **kwargs)
+        super(YesNoForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
 

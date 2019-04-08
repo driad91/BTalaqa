@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from MCQAssignmentsApp.forms.forms import TestForm, QuestionForm, AnswerForm, DeleteQuestion, AssignmentsForm
+from MCQAssignmentsApp.forms.forms import TestForm, QuestionForm, AnswerForm, YesNoForm, AssignmentsForm
 from MCQAssignmentsApp.models import Test, Question, Answer, StudentTestAnswers, TestUserAssignment,AssignmentCreator
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -163,7 +163,7 @@ def delete_question(request, pk, question_pk):
 
     if question is not None:
         if request.method == "POST":
-            question_form = DeleteQuestion(request.POST)
+            question_form = YesNoForm(request.POST)
             if question_form.is_valid():
                 if question_form.cleaned_data["yes_no"]:
                     # deleting the question
@@ -179,7 +179,7 @@ def delete_question(request, pk, question_pk):
                   {'question': question,
                    'test': Test.objects.get(pk=pk),
                    'answers': answers,
-                   'form': DeleteQuestion
+                   'form': YesNoForm
                    })
 
 
@@ -195,6 +195,7 @@ def edit_tests(request):
                   {'tests': Test.objects.all(),
 
                    })
+
 @login_required
 def render_teacher_dashboard(request):
     """
@@ -247,33 +248,49 @@ def render_test(request, id, student_id):
     :param student_id: student_id
     :return:
     """
-
-    # check if student already did this test?
+    student_answers = 0  # simple default value against which frontend checks.
     student_answers_for_this_test = StudentTestAnswers.objects.filter(test_id=id, student_id=student_id)
-    if student_answers_for_this_test:
-        student_answers_dict = dict()
-        for answ in student_answers_for_this_test.values('question_id', 'answer_id'):
-            student_answers_dict[answ["question_id"]] = answ["answer_id"]
+    if request.method == "POST":
+        yes_no_form = YesNoForm(request.POST)
+        if yes_no_form.is_valid():
+            # if a student wants to retake a test
+            if yes_no_form.cleaned_data["yes_no"]:
+                # if there are answers delete them. (basically this if should always be true)
+                if student_answers_for_this_test:
+                    for answer in student_answers_for_this_test:
+                        answer.delete()
+                    messages.success(request, "This is your new attempt. Go for it!")
+                    yes_no_form = False
 
-        test = Test.objects.get(pk=id)
-        correct_answers = Answer.objects.filter(is_correct=True,
-                                                question__test=test).values('id', 'question_id')
-
-        percentage, corrections_dict = test_helper.test_correction \
-            (student_answers=student_answers_dict, model_answers=correct_answers)
-        student_answers = json.dumps({"percentage": percentage,
-                                      "corrections_dict": corrections_dict})
-        messages.info(request, "You have already taken this test. Please, see below your answers.")
     else:
-        student_answers = 0
+        yes_no_form = False  # do not render a form by default
+        # check if student already did this test?
+
+        if student_answers_for_this_test:
+            yes_no_form = YesNoForm()  # render a retake question
+            student_answers_dict = dict()
+            for answ in student_answers_for_this_test.values('question_id', 'answer_id'):
+                student_answers_dict[answ["question_id"]] = answ["answer_id"]
+
+            test = Test.objects.get(pk=id)
+            correct_answers = Answer.objects.filter(is_correct=True,
+                                                    question__test=test).values('id', 'question_id')
+
+            percentage, corrections_dict = test_helper.test_correction \
+                (student_answers=student_answers_dict, model_answers=correct_answers)
+            student_answers = json.dumps({"percentage": percentage,
+                                          "corrections_dict": corrections_dict})
+            messages.info(request, "You have already taken this test. Please, see below your answers.")
 
     relevant_questions = Question.objects.filter(test=id)
     relevant_answers = Answer.objects.filter(question__in=relevant_questions.values_list('id', flat=True))
+
     return render(request, 'students/selected-test.html', context={'questions': relevant_questions.values(),
                                                                    'answers': relevant_answers.values(),
                                                                    'test': Test.objects.get(id=id),
                                                                    'student_answers': student_answers,  # this is here so that the link to the same view can be used in student-dashboard
-                                                                   'student': User.objects.get(id=student_id)
+                                                                   'student': User.objects.get(id=student_id),
+                                                                   'retake_form': yes_no_form
                                                                    })
 
 
