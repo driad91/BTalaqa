@@ -7,7 +7,7 @@ App to help students with learning English
 $ python manage.py makemigrations
 $ python manage.py migrate
 $ python manage.py default_users
-$ python manage.py loaddata initial_data
+$ python manage.py loaddata initial
 ```
 
 ## Default Users
