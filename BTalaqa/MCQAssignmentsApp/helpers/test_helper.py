@@ -55,7 +55,7 @@ def test_scores_by_student(student):
     student_test_answers_qs = \
         StudentTestAnswers.objects.filter(student=student).values()
     if not student_test_answers_qs:
-        return pd.DataFrame()
+        return dict(), False
     student_test_answers_df = pd.DataFrame(list(student_test_answers_qs))
 
     test_scores = {}
@@ -66,7 +66,8 @@ def test_scores_by_student(student):
                         "number_of_completed_additional_tests": 0
                         }
 
-    assigned_tests_ids = tuple(map(lambda x: x.id, TestUserAssignment.objects.filter(user=student)))
+    assigned_tests_ids = TestUserAssignment.objects.filter(user=student)\
+        .values_list('test__id', flat=True)
 
     all_tests = Test.objects.all()
     tests_done_by_student = list(student_test_answers_df['test_id'].unique())
@@ -94,7 +95,17 @@ def test_scores_by_student(student):
                 dashboard_scores["number_of_completed_additional_tests"] += 1
                 dashboard_scores["additional_tests"].append(score)
             dashboard_scores["all_tests"].append(score)
-    dashboard_scores["assigned_tests"] = pd.np.mean(dashboard_scores["assigned_tests"])
-    dashboard_scores["additional_tests"] = pd.np.mean(dashboard_scores["additional_tests"])
-    dashboard_scores["all_tests"] = pd.np.mean(dashboard_scores["all_tests"])
+    try:
+        dashboard_scores["assigned_tests"] = str(int(pd.np.mean(dashboard_scores["assigned_tests"]) * 100)) + '%'
+    except ValueError:
+        dashboard_scores["assigned_tests"] = "0%"
+    try:
+        dashboard_scores["additional_tests"] = str(int(pd.np.mean(dashboard_scores["additional_tests"]) * 100)) + '%'
+    except ValueError:
+        dashboard_scores["additional_tests"] = "0%"
+    try:
+        dashboard_scores["all_tests"] = str(int(pd.np.mean(dashboard_scores["all_tests"]) * 100)) + '%'
+    except ValueError:
+        dashboard_scores["all_tests"] = "0%"
+    dashboard_scores["count_assigned_tests"] = len(assigned_tests_ids)
     return test_scores, dashboard_scores

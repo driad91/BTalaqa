@@ -1,0 +1,19 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/custom/edit-tests.css' %}">
+<script src="{% static 'js/custom/teachers/DeleteTest.js' %}"></script>
+
+
+
+        <h2>Tests Overview</h2>
+
+        <ul class="list-group">
+            {% for test in tests %}
+             <li class="list-group-item" > <a href={% url 'MCQAssignmentsApp:test_overview' pk=test.id %}> {{ test.name }}</a> | <div class="d-inline bg-{{test.tag_color}}" >{{ test.tag }} </div>
+                 | <a id="delete-test-link" href="{% url 'MCQAssignmentsApp:delete_test' pk=test.id %}">  <b>X</b> </a>   </li>
+            {% endfor %}
+        </ul>
+
+
+{% endblock %}

@@ -94,6 +94,7 @@ class TestUserAssignment(models.Model):
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    assignment_completed = models.BooleanField(default=False)
 
     class Meta:
 

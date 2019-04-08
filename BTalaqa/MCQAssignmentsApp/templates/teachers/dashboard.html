@@ -2,8 +2,11 @@
 {% load static %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/custom/edit-tests.css' %}">
+<link rel="stylesheet" href="{% static 'css/vendors/chartjs/Chart.min.css' %}">
 
+<script src="{% static 'js/vendors/chartjs/Chart.min.js' %}"></script>
 <script src="{% static 'js/custom/teachers/DeleteTest.js' %}"></script>
+<script src="{% static 'js/custom/teachers/Dashboard.js' %}"></script>
 
 
 
@@ -15,6 +18,7 @@
             <thead>
                 <tr>
                     <th>Username</th>
+                    <th>Count of assigned tests</th>
                     <th>Completed assigned tests</th>
                     <th>Completed additional tests</th>
                     <th>Average score on assigned</th>
@@ -26,7 +30,8 @@
                 {% for student, student_stat in students_statistics.items %}
                 <tr>
                     <td>{{student.username}}</td>
-                    <td>{{student_stat.number_of_completed_assigned_tests}}</td>
+                    <td class="count-assigned-tests">{{student_stat.count_assigned_tests}}</td>
+                    <td class="completed-assigned-tests">{{student_stat.number_of_completed_assigned_tests}}</td>
                     <td>{{student_stat.number_of_completed_additional_tests}}</td>
                     <td>{{student_stat.assigned_tests}}</td>
                     <td>{{student_stat.additional_tests}}</td>
@@ -40,18 +45,12 @@
         </table>
     </div>
 </div>
-<hr>
-<div class="row">
-    <div class="col-10 offset-1">
-        <h2>Tests Overview</h2>
-
-        <ul class="list-group">
-            {% for test in tests %}
-             <li class="list-group-item" > <a href={% url 'MCQAssignmentsApp:test_overview' pk=test.id %}> {{ test.name }}</a> | <div class="d-inline bg-{{test.tag_color}}" >{{ test.tag }} </div>
-                 | <a id="delete-test-link" href="{% url 'MCQAssignmentsApp:delete_test' pk=test.id %}">  <b>X</b> </a>   </li>
-            {% endfor %}
-        </ul>
-    </div>
+    <div class="col-5 offset-3">
+<div class="card">
+<div class="card-header">Overall Assigned and Solved Tests</div>
+  <div class="card-body">
+      <canvas id="barchart-assigned-solved">
+    </canvas>
 </div>
-
+</div>
 {% endblock %}
