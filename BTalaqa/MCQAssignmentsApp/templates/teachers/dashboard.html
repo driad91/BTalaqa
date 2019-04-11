@@ -30,12 +30,39 @@
                 {% for student, student_stat in students_statistics.items %}
                 <tr>
                     <td>{{student.username}}</td>
+                    {% if not student_stat.count_assigned_tests %}
+                     <td class="count-assigned-tests">0</td>
+
+                    {% else %}
                     <td class="count-assigned-tests">{{student_stat.count_assigned_tests}}</td>
+
+                    {% endif %}
+                    {% if not student_stat.number_of_completed_assigned_tests %}
+                    <td class="completed-assigned-tests">0</td>
+                    {% else %}
                     <td class="completed-assigned-tests">{{student_stat.number_of_completed_assigned_tests}}</td>
+                    {% endif %}
+                    {% if not student_stat.number_of_completed_additional_tests %}
+                    <td> 0 </td>
+                    {% else %}
                     <td>{{student_stat.number_of_completed_additional_tests}}</td>
+                    {% endif %}
+                    {% if not student_stat.assigned_tests %}
+                    <td> N/A </td>
+                    {% else %}
                     <td>{{student_stat.assigned_tests}}</td>
+                    {% endif %}
+                    {% if not student_stat.additional_tests %}
+                    <td> N/A </td>
+                    {% else %}
                     <td>{{student_stat.additional_tests}}</td>
+                    {% endif %}
+                    {% if not student_stat.all_tests %}
+                    <td> N/A </td>
+                    {% else %}
                     <td>{{student_stat.all_tests}}</td>
+                    {% endif %}
+
                     <td><a href={% url 'MCQAssignmentsApp:render_student_dashboard' user_id=student.id %}> Details</a></td>
                 </tr>
                 {% endfor %}
