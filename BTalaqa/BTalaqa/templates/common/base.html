@@ -2,11 +2,16 @@
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
+        {% load static %}
+      <link rel="shortcut icon" type="image/png" href="{% static 'favicon/favicon.ico' %}"/>
 
+  <title>
+
+    {% block title %} BTalaqa {% endblock %}
+  </title>
 </head>
 
 <body>
-    {% load static %}
     {% load extra_tags %}
     <link rel="stylesheet" href="{% static 'css/vendors/bootstrap/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/vendors/ostrich-sans/webfonts/ostrich-sans.css' %}">
