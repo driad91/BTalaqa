@@ -250,37 +250,22 @@ def render_test(request, id, student_id):
     """
     student_answers = 0  # simple default value against which frontend checks.
     student_answers_for_this_test = StudentTestAnswers.objects.filter(test_id=id, student_id=student_id)
-    if request.method == "POST":
-        yes_no_form = YesNoForm(request.POST)
-        if yes_no_form.is_valid():
-            # if a student wants to retake a test
-            if yes_no_form.cleaned_data["yes_no"]:
-                # if there are answers delete them. (basically this if should always be true)
-                if student_answers_for_this_test:
-                    for answer in student_answers_for_this_test:
-                        answer.delete()
-                    messages.success(request, "This is your new attempt. Go for it!")
-                    yes_no_form = False
-
-    else:
-        yes_no_form = False  # do not render a form by default
         # check if student already did this test?
 
-        if student_answers_for_this_test:
-            yes_no_form = YesNoForm()  # render a retake question
-            student_answers_dict = dict()
-            for answ in student_answers_for_this_test.values('question_id', 'answer_id'):
-                student_answers_dict[answ["question_id"]] = answ["answer_id"]
+    if student_answers_for_this_test:
+        #yes_no_form = YesNoForm()  # render a retake question
+        student_answers_dict = dict()
+        for answ in student_answers_for_this_test.values('question_id', 'answer_id'):
+            student_answers_dict[answ["question_id"]] = answ["answer_id"]
 
-            test = Test.objects.get(pk=id)
-            correct_answers = Answer.objects.filter(is_correct=True,
-                                                    question__test=test).values('id', 'question_id')
+        test = Test.objects.get(pk=id)
+        correct_answers = Answer.objects.filter(is_correct=True,
+                                                question__test=test).values('id', 'question_id')
 
-            percentage, corrections_dict = test_helper.test_correction \
-                (student_answers=student_answers_dict, model_answers=correct_answers)
-            student_answers = json.dumps({"percentage": percentage,
-                                          "corrections_dict": corrections_dict})
-            messages.info(request, "You have already taken this test. Please, see below your answers.")
+        percentage, corrections_dict = test_helper.test_correction \
+            (student_answers=student_answers_dict, model_answers=correct_answers)
+        student_answers = json.dumps({"percentage": percentage,
+                                      "corrections_dict": corrections_dict})
 
     relevant_questions = Question.objects.filter(test=id)
     relevant_answers = Answer.objects.filter(question__in=relevant_questions.values_list('id', flat=True))
@@ -289,8 +274,7 @@ def render_test(request, id, student_id):
                                                                    'answers': relevant_answers.values(),
                                                                    'test': Test.objects.get(id=id),
                                                                    'student_answers': student_answers,  # this is here so that the link to the same view can be used in student-dashboard
-                                                                   'student': User.objects.get(id=student_id),
-                                                                   'retake_form': yes_no_form
+                                                                   'student': User.objects.get(id=student_id)
                                                                    })
 
 
@@ -318,7 +302,6 @@ def submit_test(request):
         assignment = TestUserAssignment.objects.get(pk=qs_assignment[0])
         assignment.assignment_completed = True
         assignment.save()
-        #qs_assignment.delete()
     qs = StudentTestAnswers.objects.filter(test=test, student=student)
     if qs.exists():  # if student has previous answers for this test
         qs.delete()  # delete

@@ -75,6 +75,22 @@ function execute(data, show_alert=true){
 $( document ).ready(function() {
     if (student_answers!=0){
         execute(student_answers, show_alert=false);
+        $('#retake_test_btn').prop('hidden',false);
 
     };
+
+    $("#retake_test_btn").click(function() {
+
+$('#retake_test_btn').prop('hidden',true);
+$('.correction').each(function (index, value){
+
+$(this).html('');
+   $("input[type=radio]").attr('disabled', false);
+ $('#submit_test').prop("disabled", false);
+
 });
+
+}
+);
+});
+
