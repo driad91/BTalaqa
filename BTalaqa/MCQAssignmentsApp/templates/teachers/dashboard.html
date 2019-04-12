@@ -30,38 +30,48 @@
                 {% for student, student_stat in students_statistics.items %}
                 <tr>
                     <td>{{student.username}}</td>
+                    <td class="count-assigned-tests">
                     {% if not student_stat.count_assigned_tests %}
-                     <td class="count-assigned-tests">0</td>
-
+                     0
                     {% else %}
-                    <td class="count-assigned-tests">{{student_stat.count_assigned_tests}}</td>
-
+                    {{student_stat.count_assigned_tests}}
                     {% endif %}
+                    </td>
+                    <td class="completed-assigned-tests">
                     {% if not student_stat.number_of_completed_assigned_tests %}
-                    <td class="completed-assigned-tests">0</td>
+                    0
                     {% else %}
-                    <td class="completed-assigned-tests">{{student_stat.number_of_completed_assigned_tests}}</td>
+                    {{student_stat.number_of_completed_assigned_tests}}
                     {% endif %}
+                    </td>
+                    <td>
                     {% if not student_stat.number_of_completed_additional_tests %}
-                    <td> 0 </td>
+                     0
                     {% else %}
-                    <td>{{student_stat.number_of_completed_additional_tests}}</td>
+                    {{student_stat.number_of_completed_additional_tests}}
                     {% endif %}
+                    </td>
+                    <td>
                     {% if not student_stat.assigned_tests %}
-                    <td> N/A </td>
+                     N/A
                     {% else %}
-                    <td>{{student_stat.assigned_tests}}</td>
+                    {{student_stat.assigned_tests}}
                     {% endif %}
+                    </td>
+                    <td>
                     {% if not student_stat.additional_tests %}
-                    <td> N/A </td>
+                    N/A
                     {% else %}
-                    <td>{{student_stat.additional_tests}}</td>
+                    {{student_stat.additional_tests}}
                     {% endif %}
+                    </td>
+                    <td>
                     {% if not student_stat.all_tests %}
-                    <td> N/A </td>
+                     N/A
                     {% else %}
-                    <td>{{student_stat.all_tests}}</td>
+                    {{student_stat.all_tests}}
                     {% endif %}
+                    </td>
 
                     <td><a href={% url 'MCQAssignmentsApp:render_student_dashboard' user_id=student.id %}> Details</a></td>
                 </tr>
