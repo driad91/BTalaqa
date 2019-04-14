@@ -67,6 +67,10 @@
                 <a class="nav-link " href={% url 'MCQAssignmentsApp:render_student_dashboard' user_id=request.user.id %}> <i class="fa fa-tachometer-alt"></i> My Dashboard<span class="sr-only">(current)</span></a>
 
               </li>
+            <li class="nav-item active">
+                <a class="nav-link " href={% url 'TopicsExplanationApp:render_active_passive' %}> <i class="fa fa-tachometer-alt"></i> Topics Explanation<span class="sr-only">(current)</span></a>
+
+              </li>
 
         {% endif %}
     </ul>

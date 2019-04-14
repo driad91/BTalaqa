@@ -22,6 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path('^$', views.home, name='home'),
     re_path('^MCQ/', include('MCQAssignmentsApp.urls', namespace='MCQAssignmentsApp')),
+    re_path('^explanation/', include('TopicsExplanationApp.urls', namespace='TopicsExplanationApp')),
+
     re_path(r'^login/$',
             auth_views.LoginView.as_view(template_name='common/login.html'),
             name='login'),

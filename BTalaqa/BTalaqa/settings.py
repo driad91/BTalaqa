@@ -60,7 +60,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'MCQAssignmentsApp/templates'),
-                 os.path.join(BASE_DIR, 'BTalaqa/templates')],
+                 os.path.join(BASE_DIR, 'BTalaqa/templates'),
+                 os.path.join(BASE_DIR,  'TopicsExplanationApp/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,7 +123,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "MCQAssignmentsApp/static")
+    os.path.join(BASE_DIR, "MCQAssignmentsApp/static"),
+    os.path.join(BASE_DIR, "TopicsExplanationApp/static")
 ]
 
 LOGIN_REDIRECT_URL ='home'
