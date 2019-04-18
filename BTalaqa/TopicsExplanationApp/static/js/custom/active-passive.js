@@ -1,35 +1,49 @@
 $(document).ready(function() {
 $("#get-dep-btn").click(function() {
+
 var sentenceEntered = $("#sentence").val();
-alert(sentenceEntered);
+        $.ajax({
+            type: "GET",
+            url: "/explanation/parse_sentence/",
+            data: {'sentence':sentenceEntered
+            },
+            success: function(data) {
 
-   var nodes = new vis.DataSet([
-        {id: 1, label: 'Node 1'},
-        {id: 2, label: 'Node 2'},
-        {id: 3, label: 'Node 3'},
-        {id: 4, label: 'Node 4'},
-        {id: 5, label: 'Node 5'}
-    ]);
+            var nodes = new vis.DataSet(data['nodes']);
+            var edges = new vis.DataSet(data['edges']);
+            var container = document.getElementById('dep-network');
+            console.log(nodes);
+            console.log(edges);
+            // provide the data in the vis format
+            var data = {
+                nodes: nodes,
+                edges: edges
+            };
+            var options = {
+                      layout: {
+                        randomSeed: undefined,
+                        improvedLayout:true,
+                        hierarchical: {
+                          enabled:true,
+                          levelSeparation: 150,
+                          nodeSpacing: 100,
+                          treeSpacing: 200,
+                          blockShifting: true,
+                          edgeMinimization: true,
+                          parentCentralization: true,
+                          direction: 'LR',        // UD, DU, LR, RL
+                          sortMethod: 'directed'   // hubsize, directed
+                        }
+                      }
+                    };
 
-    // create an array with edges
-    var edges = new vis.DataSet([
-        {from: 1, to: 3},
-        {from: 1, to: 2},
-        {from: 2, to: 4},
-        {from: 2, to: 5}
-    ]);
+            // initialize your network!
+            var network = new vis.Network(container, data, options);
+
+              }
+        });
 
     // create a network
-    var container = document.getElementById('dep-network');
 
-    // provide the data in the vis format
-    var data = {
-        nodes: nodes,
-        edges: edges
-    };
-    var options = {};
-
-    // initialize your network!
-    var network = new vis.Network(container, data, options);
 });
 });
