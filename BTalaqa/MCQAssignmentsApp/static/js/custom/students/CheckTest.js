@@ -28,7 +28,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: "submit_test/",
+            url: " submit_test/",
             data: {
                 "values": JSON.stringify({
                     "student_answers": questionAnswersDict,

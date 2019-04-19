@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from MCQAssignmentsApp.forms.forms import TestForm, QuestionForm, AnswerForm, YesNoForm, AssignmentsForm
-from MCQAssignmentsApp.models import Test, Question, Answer, StudentTestAnswers, TestUserAssignment,AssignmentCreator
+from MCQAssignmentsApp.models import Test, Question, Answer, StudentTestAnswers, TestUserAssignment,AssignmentCreator,YouTubeVideo,UnlockedVideo
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -8,8 +8,8 @@ from django.http import JsonResponse
 from django.forms import formset_factory
 from MCQAssignmentsApp.helpers import test_helper
 import json
+import random
 from django.contrib.auth.models import User, Group
-
 
 @login_required
 @permission_required('MCQAssignmentsApp.edit_test')
@@ -297,6 +297,7 @@ def submit_test(request):
     test = Test.objects.get(pk=test_id)
     correct_answers = Answer.objects.filter(is_correct=True,
                                             question__test=test).values('id', 'question_id')
+    old_test=False
     qs_assignment = TestUserAssignment.objects.filter(test=test, user=student).values_list('id', flat=True)
     if qs_assignment.exists():
         assignment = TestUserAssignment.objects.get(pk=qs_assignment[0])
@@ -304,6 +305,7 @@ def submit_test(request):
         assignment.save()
     qs = StudentTestAnswers.objects.filter(test=test, student=student)
     if qs.exists():  # if student has previous answers for this test
+        old_test = True
         qs.delete()  # delete
     for k, v in student_answers_dict.items():
         question = Question.objects.get(pk=k)  # retrieving question item from id
@@ -315,6 +317,19 @@ def submit_test(request):
         test_answer.save()
     percentage, corrections_dict = test_helper.test_correction\
         (student_answers=student_answers_dict, model_answers=correct_answers)
+    if not old_test:
+        youtube_videos = list(YouTubeVideo.objects.values_list('id',flat=True))
+        youtube_videos_unlocked = list(UnlockedVideo.objects.filter(student=student).values_list('video__id',flat=True))
+        if not len(youtube_videos) == 0:
+            left_videos = list(set(youtube_videos) - set(youtube_videos_unlocked))
+            if not len(left_videos) == 0:
+                new_video_id = random.choice(left_videos)
+                new_video = YouTubeVideo.objects.get(pk=new_video_id)
+                unlocked_video = UnlockedVideo.objects.create(student=student, video=new_video,
+                                             liked=False)
+                unlocked_video.save()
+
+
     return JsonResponse({'percentage': int(percentage*100),
                          'corrections_dict': corrections_dict})
 
@@ -402,3 +417,41 @@ def render_student_dashboard(request, user_id):
     return render(request, 'students/student-dashboard.html',
                   context={'scores': dict_scores,
                            'student_id': user_id})
+
+
+@login_required
+def render_videos(request):
+    """
+    render videos unlocked by user
+
+    :param request:
+    :return:
+    """
+
+    student = request.user
+    unlocked_videos = UnlockedVideo.objects.filter(student=student).values('id', 'video__name',
+                                                                           'video__link', 'liked')
+
+    return render(request, 'students/videos.html',
+                  context={'unlocked_videos': unlocked_videos})
+def like_video(request):
+    """
+    user likes specific video and saving it in DB
+    :param request:  AJAX Request
+    :return: boolean
+    """
+    if request.is_ajax:
+        id_element = request.POST.get('id')
+        user_unlocked_video = UnlockedVideo.objects.get(pk=id_element)
+        if user_unlocked_video:
+            if user_unlocked_video.liked:
+                user_unlocked_video.liked = False
+            else:
+                user_unlocked_video.liked = True
+
+            user_unlocked_video.save()
+    return JsonResponse({'success': True})
+
+
+
+

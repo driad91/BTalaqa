@@ -1,0 +1,34 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block scripts %}
+<script src="{% static 'js/custom/students/AjaxCsrf.js' %}"></script>
+
+<script src="{% static 'js/custom/students/likeVideo.js' %}"></script>
+
+{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/custom/like-button.css' %}">
+
+<div class="embed-video-small">
+
+
+
+
+<ul class="list-group">
+            {% for video in unlocked_videos %}
+             <li class="list-group-item" > {{ video.video__name }} </li>
+    <div class="videoWrapper">
+<iframe width="560" height="315" src="{{ video.video__link }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <button unique_id= "{{ video.id }}" class="btn like-btn {% if video.liked %} liked {% endif %}  "> <i class="fa fa-thumbs-up"></i> Like </button>
+</div>
+      {% endfor %}
+
+    </ul>
+</div>
+
+
+
+
+
+{% endblock %}
