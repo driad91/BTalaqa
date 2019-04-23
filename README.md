@@ -8,6 +8,7 @@ $ python manage.py makemigrations
 $ python manage.py migrate
 $ python manage.py default_users
 $ python manage.py loaddata initial
+$ python manage.py loaddata YouTubeLinks
 ```
 
 ## Default Users

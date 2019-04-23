@@ -117,3 +117,33 @@ class AssignmentCreator(models.Model):
     """
     teacher = models.ForeignKey(User, on_delete=models.CASCADE)
     assignment = models.ForeignKey(TestUserAssignment, on_delete=models.CASCADE)
+
+
+class YouTubeVideo(models.Model):
+    """
+    Model to store youtube video link and named to be rendered as awards for
+    students after finishing test
+    """
+    link = models.CharField(max_length=255, blank=False)
+    name = models.CharField(max_length=255, blank=False)
+    app_label = 'MCQAssignmentsApp'
+    verbose_name = 'youtube_video'
+    verbose_name_plural = 'youtube_videos'
+
+
+class UnlockedVideo(models.Model):
+    """
+    Unlocked videos per student, which they would always be shown if they went
+    to the videos tab and info on whether they watched it, and liked it
+    """
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
+    video = models.ForeignKey(YouTubeVideo, on_delete=models.CASCADE)
+    liked = models.BooleanField(default=False)
+
+    class Meta:
+        app_label = 'MCQAssignmentsApp'
+        unique_together = ('student', 'video')
+        verbose_name = 'unlocked_video'
+        verbose_name_plural = 'unlocked_videos'
+
+
