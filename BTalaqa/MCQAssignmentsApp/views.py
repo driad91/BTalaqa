@@ -297,6 +297,7 @@ def submit_test(request):
     test = Test.objects.get(pk=test_id)
     correct_answers = Answer.objects.filter(is_correct=True,
                                             question__test=test).values('id', 'question_id')
+    is_video_added = False
     old_test=False
     qs_assignment = TestUserAssignment.objects.filter(test=test, user=student).values_list('id', flat=True)
     if qs_assignment.exists():
@@ -328,10 +329,11 @@ def submit_test(request):
                 unlocked_video = UnlockedVideo.objects.create(student=student, video=new_video,
                                              liked=False)
                 unlocked_video.save()
-
+                is_video_added = True
 
     return JsonResponse({'percentage': int(percentage*100),
-                         'corrections_dict': corrections_dict})
+                         'corrections_dict': corrections_dict,
+                         'is_video_added': is_video_added})
 
 
 @login_required
