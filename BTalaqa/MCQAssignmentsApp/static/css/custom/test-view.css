@@ -14,3 +14,9 @@ color:red;
 
 color:green;
 }
+
+
+.ghost{
+
+visibility: hidden;
+}

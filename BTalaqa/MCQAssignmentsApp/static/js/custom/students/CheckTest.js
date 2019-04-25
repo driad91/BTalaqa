@@ -45,6 +45,7 @@ $(document).ready(function() {
 function execute(data, show_alert=true){
     var percentage = data['percentage'] + ' %';
     var corrections = data['corrections_dict'];
+    var is_video_added = data['is_video_added'];
     if (show_alert) {
         alert('You scored ' + percentage + ' on this test');
     }
@@ -69,6 +70,13 @@ function execute(data, show_alert=true){
             $('#correction_div_' + index.toString() + '_' + chosenAnswer.toString()).append("<i class ='fas fa-times-circle'> </i>");
             $('#correction_div_' + index.toString() + '_' + correctAnswers[0].toString()).append(correctAnswerDiv);
         }
+    }
+
+    if (is_video_added)
+    {
+
+      $("#video_msg").removeClass("ghost");
+
     }
 }
 
