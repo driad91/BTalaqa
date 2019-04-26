@@ -28,7 +28,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: "submit_test/",
+            url: " submit_test/",
             data: {
                 "values": JSON.stringify({
                     "student_answers": questionAnswersDict,
@@ -45,6 +45,7 @@ $(document).ready(function() {
 function execute(data, show_alert=true){
     var percentage = data['percentage'] + ' %';
     var corrections = data['corrections_dict'];
+    var is_video_added = data['is_video_added'];
     if (show_alert) {
         alert('You scored ' + percentage + ' on this test');
     }
@@ -70,11 +71,34 @@ function execute(data, show_alert=true){
             $('#correction_div_' + index.toString() + '_' + correctAnswers[0].toString()).append(correctAnswerDiv);
         }
     }
+
+    if (is_video_added)
+    {
+
+      $("#video_msg").removeClass("ghost");
+
+    }
 }
 
 $( document ).ready(function() {
     if (student_answers!=0){
         execute(student_answers, show_alert=false);
+        $('#retake_test_btn').prop('hidden',false);
 
     };
+
+    $("#retake_test_btn").click(function() {
+
+$('#retake_test_btn').prop('hidden',true);
+$('.correction').each(function (index, value){
+
+$(this).html('');
+   $("input[type=radio]").attr('disabled', false);
+ $('#submit_test').prop("disabled", false);
+
 });
+
+}
+);
+});
+

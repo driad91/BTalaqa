@@ -24,7 +24,7 @@
                             {% if answer.question_id == question.id %}
                                 <div>
                                     <input type="radio" question_id={{ question.id }} value=  {{ answer.id }}  name={{ question.id}}>
-                                    <label for= {{ answer.id }} >   {{ answer.text }} </label>   <div id="correction_div_{{ question.id }}_{{ answer.id }}"></div>
+                                    <label for= {{ answer.id }} >   {{ answer.text }} </label>   <div id="correction_div_{{ question.id }}_{{ answer.id }}" class="correction"></div>
                                 </div>
                             {% endif %}
                         {% endfor %}
@@ -33,31 +33,28 @@
              </div>
         {% endfor %}
 
-        {% if not retake_form %}
             <div class="row">
                 <div class="col-10 offset-1" align="center">
                     <button class="btn btn-danger" id="submit_test" type="submit"> Submit Test </button>
+                     <button class="btn btn-danger" id="retake_test_btn" hidden="true"> Retake Test </button>
+
+
+
                 </div>
             </div>
-        {% endif %}
+
+             <div class="row">
+                <div id="video_msg" class="ghost col-10 offset-1" align="center">
+                    <b>Congratulations! </b>  You've unlocked a new video! Click on <b> "My Unlocked Videos" </b> in the menu above to check it out!
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 
-{% if retake_form %}
-<hr>
-<form method="post">
-    {% csrf_token %}
-    <div class="row">
-        <div class="col-5 offset-1">
-            <p><b>Would you like to retake this test?</b> </p>
-            {{ retake_form.yes_no }}
-            <input class="btn btn-xs btn-info" type="submit" value="Retake Test">
-        </div>
-    </div>
-</form>
 
-{% endif %}
+
 
 
 

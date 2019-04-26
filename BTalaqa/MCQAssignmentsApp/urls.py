@@ -24,6 +24,8 @@ urlpatterns = [
 
     re_path('^assign_users/', views.assign_users, name='assign_users_tests'),
     re_path('^render_student_dashboard/(?P<user_id>\d+)/$', views.render_student_dashboard, name='render_student_dashboard'),
+    re_path('^render_videos/$', views.render_videos, name='render_videos'),
+    re_path('like_video/$', views.like_video, name='like_video')
 
 ]
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from MCQAssignmentsApp.forms.forms import TestForm, QuestionForm, AnswerForm, YesNoForm, AssignmentsForm
-from MCQAssignmentsApp.models import Test, Question, Answer, StudentTestAnswers, TestUserAssignment,AssignmentCreator
+from MCQAssignmentsApp.models import Test, Question, Answer, StudentTestAnswers, TestUserAssignment,AssignmentCreator,YouTubeVideo,UnlockedVideo
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -8,8 +8,8 @@ from django.http import JsonResponse
 from django.forms import formset_factory
 from MCQAssignmentsApp.helpers import test_helper
 import json
+import random
 from django.contrib.auth.models import User, Group
-
 
 @login_required
 @permission_required('MCQAssignmentsApp.edit_test')
@@ -250,37 +250,22 @@ def render_test(request, id, student_id):
     """
     student_answers = 0  # simple default value against which frontend checks.
     student_answers_for_this_test = StudentTestAnswers.objects.filter(test_id=id, student_id=student_id)
-    if request.method == "POST":
-        yes_no_form = YesNoForm(request.POST)
-        if yes_no_form.is_valid():
-            # if a student wants to retake a test
-            if yes_no_form.cleaned_data["yes_no"]:
-                # if there are answers delete them. (basically this if should always be true)
-                if student_answers_for_this_test:
-                    for answer in student_answers_for_this_test:
-                        answer.delete()
-                    messages.success(request, "This is your new attempt. Go for it!")
-                    yes_no_form = False
-
-    else:
-        yes_no_form = False  # do not render a form by default
         # check if student already did this test?
 
-        if student_answers_for_this_test:
-            yes_no_form = YesNoForm()  # render a retake question
-            student_answers_dict = dict()
-            for answ in student_answers_for_this_test.values('question_id', 'answer_id'):
-                student_answers_dict[answ["question_id"]] = answ["answer_id"]
+    if student_answers_for_this_test:
+        #yes_no_form = YesNoForm()  # render a retake question
+        student_answers_dict = dict()
+        for answ in student_answers_for_this_test.values('question_id', 'answer_id'):
+            student_answers_dict[answ["question_id"]] = answ["answer_id"]
 
-            test = Test.objects.get(pk=id)
-            correct_answers = Answer.objects.filter(is_correct=True,
-                                                    question__test=test).values('id', 'question_id')
+        test = Test.objects.get(pk=id)
+        correct_answers = Answer.objects.filter(is_correct=True,
+                                                question__test=test).values('id', 'question_id')
 
-            percentage, corrections_dict = test_helper.test_correction \
-                (student_answers=student_answers_dict, model_answers=correct_answers)
-            student_answers = json.dumps({"percentage": percentage,
-                                          "corrections_dict": corrections_dict})
-            messages.info(request, "You have already taken this test. Please, see below your answers.")
+        percentage, corrections_dict = test_helper.test_correction \
+            (student_answers=student_answers_dict, model_answers=correct_answers)
+        student_answers = json.dumps({"percentage": percentage,
+                                      "corrections_dict": corrections_dict})
 
     relevant_questions = Question.objects.filter(test=id)
     relevant_answers = Answer.objects.filter(question__in=relevant_questions.values_list('id', flat=True))
@@ -289,8 +274,7 @@ def render_test(request, id, student_id):
                                                                    'answers': relevant_answers.values(),
                                                                    'test': Test.objects.get(id=id),
                                                                    'student_answers': student_answers,  # this is here so that the link to the same view can be used in student-dashboard
-                                                                   'student': User.objects.get(id=student_id),
-                                                                   'retake_form': yes_no_form
+                                                                   'student': User.objects.get(id=student_id)
                                                                    })
 
 
@@ -313,14 +297,16 @@ def submit_test(request):
     test = Test.objects.get(pk=test_id)
     correct_answers = Answer.objects.filter(is_correct=True,
                                             question__test=test).values('id', 'question_id')
+    is_video_added = False
+    old_test=False
     qs_assignment = TestUserAssignment.objects.filter(test=test, user=student).values_list('id', flat=True)
     if qs_assignment.exists():
         assignment = TestUserAssignment.objects.get(pk=qs_assignment[0])
         assignment.assignment_completed = True
         assignment.save()
-        #qs_assignment.delete()
     qs = StudentTestAnswers.objects.filter(test=test, student=student)
     if qs.exists():  # if student has previous answers for this test
+        old_test = True
         qs.delete()  # delete
     for k, v in student_answers_dict.items():
         question = Question.objects.get(pk=k)  # retrieving question item from id
@@ -332,8 +318,22 @@ def submit_test(request):
         test_answer.save()
     percentage, corrections_dict = test_helper.test_correction\
         (student_answers=student_answers_dict, model_answers=correct_answers)
+    if not old_test:
+        youtube_videos = list(YouTubeVideo.objects.values_list('id',flat=True))
+        youtube_videos_unlocked = list(UnlockedVideo.objects.filter(student=student).values_list('video__id',flat=True))
+        if not len(youtube_videos) == 0:
+            left_videos = list(set(youtube_videos) - set(youtube_videos_unlocked))
+            if not len(left_videos) == 0:
+                new_video_id = random.choice(left_videos)
+                new_video = YouTubeVideo.objects.get(pk=new_video_id)
+                unlocked_video = UnlockedVideo.objects.create(student=student, video=new_video,
+                                             liked=False)
+                unlocked_video.save()
+                is_video_added = True
+
     return JsonResponse({'percentage': int(percentage*100),
-                         'corrections_dict': corrections_dict})
+                         'corrections_dict': corrections_dict,
+                         'is_video_added': is_video_added})
 
 
 @login_required
@@ -419,3 +419,41 @@ def render_student_dashboard(request, user_id):
     return render(request, 'students/student-dashboard.html',
                   context={'scores': dict_scores,
                            'student_id': user_id})
+
+
+@login_required
+def render_videos(request):
+    """
+    render videos unlocked by user
+
+    :param request:
+    :return:
+    """
+
+    student = request.user
+    unlocked_videos = UnlockedVideo.objects.filter(student=student).values('id', 'video__name',
+                                                                           'video__link', 'liked')
+
+    return render(request, 'students/videos.html',
+                  context={'unlocked_videos': unlocked_videos})
+def like_video(request):
+    """
+    user likes specific video and saving it in DB
+    :param request:  AJAX Request
+    :return: boolean
+    """
+    if request.is_ajax:
+        id_element = request.POST.get('id')
+        user_unlocked_video = UnlockedVideo.objects.get(pk=id_element)
+        if user_unlocked_video:
+            if user_unlocked_video.liked:
+                user_unlocked_video.liked = False
+            else:
+                user_unlocked_video.liked = True
+
+            user_unlocked_video.save()
+    return JsonResponse({'success': True})
+
+
+
+
