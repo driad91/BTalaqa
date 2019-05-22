@@ -80,7 +80,6 @@ def test_scores_by_student(student):
             correct_answers = pd.DataFrame(list(Answer.objects.filter(is_correct=True,
                                                                       question__test=current_test).values('id',
                                                                                                           'question_id')))
-
             student_test_answers = student_test_answers_df[student_test_answers_df['test_id'] == current_test.id]
 
             score = calculate_test_score_only(student_answers=student_test_answers,
