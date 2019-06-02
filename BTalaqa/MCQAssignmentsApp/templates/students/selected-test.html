@@ -6,8 +6,9 @@
 </script>
 <script src="{% static 'js/custom/students/AjaxCsrf.js' %}"></script>
 <script src="{% static 'js/custom/students/CheckTest.js' %}"></script>
-
 <link rel="stylesheet" href="{% static 'css/custom/test-view.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/custom/radio-buttons.css' %}">
 
 <div class="row">
     <div class="col-10 offset-1">
@@ -22,9 +23,14 @@
                         <b> {{ forloop.counter }}. {{ question.text }} </b>
                         {% for answer in answers %}
                             {% if answer.question_id == question.id %}
-                                <div>
-                                    <input type="radio" question_id={{ question.id }} value=  {{ answer.id }}  name={{ question.id}}>
-                                    <label for= {{ answer.id }} >   {{ answer.text }} </label>   <div id="correction_div_{{ question.id }}_{{ answer.id }}" class="correction"></div>
+                                <div >
+                            <input id={{ answer.id }} style="display:inline-block" type="radio" class="option-input radio" question_id={{ question.id }} value=  {{ answer.id }}  name={{ question.id}}>
+
+                                    <label style="display:inline"for= {{ answer.id }} >
+                                         {{ answer.text }}
+                                        <br>
+                                    </label>
+                                    <div style="display:inline-block"id="correction_div_{{ question.id }}_{{ answer.id }}" class="correction"></div>
                                 </div>
                             {% endif %}
                         {% endfor %}
