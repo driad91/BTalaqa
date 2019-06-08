@@ -4,10 +4,11 @@
 <head>
         {% load static %}
       <link rel="shortcut icon" type="image/png" href="{% static 'favicon/favicon.ico' %}"/>
+    <link href="https://fonts.googleapis.com/css?family=Aref+Ruqaa:400,700|Rakkas&display=swap&subset=arabic" rel="stylesheet">
 
   <title>
 
-    {% block title %} BTalaqa {% endblock %}
+    {% block title %}BTalaqa {% endblock %}
   </title>
 </head>
 
@@ -20,18 +21,22 @@
 
     <script src="{% static 'js/vendors/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/vendors/bootstrap/bootstrap.min.js' %}"></script>
-
     <div class="page-header">
+
         <div class="row">
+
             <div class="col-8">
-                <h1><div class="font-ostrich-sans"> <i class="fa fa-language"> </i> BTalaقa</div></h1>
-            </div>
+                <div class="container">
+               <div class="font-ostrich-sans" style="display:inline; font-size:50px"> <img src={% static 'favicon/favicon.ico' %}>Tala</div><div style="display:inline;font-size:70px" class="font-rakkas">ق</div> <div class="font-ostrich-sans" style="display:inline;font-size:50px">a</div>
+               </div>
+                </div>
             <div class="col-4 text-right">
                 {{ user.get_username }}
                 <a class="btn btn-secondary btn-sm" id="logout" href={% url 'logout' %}> Logout </a>
             </div>
         </div>
-    </div>
+            </div>
+
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark col-md-12">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

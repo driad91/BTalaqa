@@ -1,7 +1,9 @@
 .font-ostrich-sans {
-    font-family: Ostrich Sans Dashed;
+    font-family: Ostrich Sans Rounded;
 }
-
+.font-rakkas{
+font-family: 'Rakkas', cursive;
+}
 .hidden {
     display: none;
 }
