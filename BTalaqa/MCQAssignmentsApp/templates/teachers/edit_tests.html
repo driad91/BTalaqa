@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{% static 'css/custom/edit-tests.css' %}">
 <script src="{% static 'js/custom/teachers/DeleteTest.js' %}"></script>
 
-
+<div class="container">
 
         <h2>Tests Overview</h2>
 
@@ -14,6 +14,6 @@
                  | <a class="delete-test-link" href="{% url 'MCQAssignmentsApp:delete_test' pk=test.id %}">  <b>X</b> </a>   </li>
             {% endfor %}
         </ul>
-
+</div>
 
 {% endblock %}

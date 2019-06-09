@@ -2,9 +2,12 @@
 
 {% block content %}
 <br>
+<div class="container">
 <form action="test/" method="post">
     {% csrf_token %}
     {{ form }}
+    <br>
     <input class="btn btn-danger" type="submit" value="Submit">
 </form>
+    </div>
 {% endblock %}
