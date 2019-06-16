@@ -1,0 +1,7 @@
+.exam-background {
+  background-image: url('/static/css/vendors/backgrounds/undraw_exams_g4ow.svg');
+  background-size:contain;
+    background-repeat: no-repeat;
+  background-position: center ;
+  height: 400px;
+}

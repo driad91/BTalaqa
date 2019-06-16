@@ -17,7 +17,7 @@
 
 <ul class="list-group">
             {% for video in unlocked_videos %}
-             <li class="list-group-item" > {{ video.video__name }} </li>
+             <li class="list-group-item font-open-sans" > {{ video.video__name }} </li>
     <div class="videoWrapper">
 <iframe width="100%" height="315" src="{{ video.video__link }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         <button unique_id= "{{ video.id }}" class="btn like-btn {% if video.liked %} liked {% endif %}  "> <i class="fa fa-thumbs-up"></i> Like </button>

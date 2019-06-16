@@ -11,22 +11,24 @@
 <link rel="stylesheet" href="{% static 'css/custom/radio-buttons.css' %}">
 
 <div class="row">
-    <div class="col-10 offset-1">
-        <h3>User: {{student.username}}</h3>
-        <h3>Test: {{test.name}}</h3>
+    <div class="col-10 offset-1 font-open-sans">
+        <br>
+        <h3>{{test.name}} </h3>
+        <hr>
+        <br>
         <div id="test_form" test_id={{ test.id }} action="#" method="post">
         {% csrf_token %}
         {% for question in questions %}
             <div class="row">
                 <div class="col-10 offset-1">
-                    <div>
+                    <div class="font-open-sans">
                         <b> {{ forloop.counter }}. {{ question.text }} </b>
                         {% for answer in answers %}
                             {% if answer.question_id == question.id %}
                                 <div >
                             <input id={{ answer.id }} style="display:inline-block" type="radio" class="option-input radio" question_id={{ question.id }} value=  {{ answer.id }}  name={{ question.id}}>
 
-                                    <label style="display:inline"for= {{ answer.id }} >
+                                    <label class="font-open-sans" style="display:inline"for= {{ answer.id }} >
                                          {{ answer.text }}
                                         <br>
                                     </label>

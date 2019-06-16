@@ -12,7 +12,7 @@
 {% if user_tests.all %}
 
 <div class="row">
-    <div class="col-10 offset-1">
+    <div class="col-10 offset-1 font-open-sans">
         <h2> Your tests: </h2>
         <ul class="list-group">
         {% for test in user_tests %}
@@ -27,7 +27,7 @@
 {% else %}
 
 <div class="row">
-    <div class="col-10 offset-1">
+    <div class="col-10 offset-1 font-open-sans">
         <p>
             There are currently no tests assigned to you :(! ...explore available tests?!
         </p>
@@ -36,13 +36,13 @@
 {% endif %}
 <br>
 <hr>
-<div class="row">
+<div class="row font-open-sans">
     <div class="col-2 offset-1">
         <button id="explore_tests" class="btn btn-primary"> explore more tests </button>
     </div>
 </div>
 <hr>
-<div id="all_tests" class="row hidden">
+<div id="all_tests" class="row hidden font-open-sans">
     <div class="col-10 offset-1">
         <h2> All tests: </h2>
         <ul class="list-group">

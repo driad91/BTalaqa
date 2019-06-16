@@ -2,11 +2,19 @@
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
+     {% load static %}
+
         <link href="https://fonts.googleapis.com/css?family=Aref+Ruqaa:400,700|Rakkas&display=swap&subset=arabic" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/custom/login-custom.css' %}">
+            <link rel="stylesheet" href="{% static 'css/custom/base-custom.css' %}">
+
+
 
 </head>
 
 <body>
+
     {% load static %}
     {% load extra_tags %}
     <link rel="stylesheet" href="{% static 'css/vendors/bootstrap/bootstrap.min.css' %}">
@@ -29,18 +37,23 @@
             </div>
 
 
-    <div class="row">
+    <div class="row font-open-sans">
         <div class="col-10 offset-1" align="center">
           {% block content %}
             <h2>Login</h2>
             <form method="post">
               {% csrf_token %}
               {{ form.as_p }}
+
+
               <button class="btn btn-danger" type="submit">Login</button>
+
             </form>
+                     <img width="300px" align="center" src="/static/css/vendors/backgrounds/undraw_exams_g4ow.svg" />
+
           {% endblock %}
 
-        </div>
     </div>
+</div>
 </body>
 </html>
