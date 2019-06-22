@@ -20,8 +20,11 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path('^$', views.about, name='about'),
+    re_path('^about/$', views.about, name='about'),
     re_path('^MCQ/', include('MCQAssignmentsApp.urls', namespace='MCQAssignmentsApp')),
+
+    re_path('^$', views.home, name='home'),
+
     re_path(r'^login/$',
             auth_views.LoginView.as_view(template_name='common/login.html'),
             name='login'),

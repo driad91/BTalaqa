@@ -474,6 +474,14 @@ def render_students_home(request):
      'count_incomplete_assigned': incomplete_assigned,
      'count_unlocked_videos': count_unlocked_videos})
 
+@login_required
+def render_teachers_home(request):
+    """
 
+    :param request:
+    :return:
+    """
+
+    return render(request, 'teachers/teachers-home.html')
 
 

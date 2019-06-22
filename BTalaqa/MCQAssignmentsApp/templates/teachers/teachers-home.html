@@ -1,0 +1,73 @@
+{% extends 'common/base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/custom/teacher-home.css' %}">
+
+
+{% block content %}
+
+
+<div class="container">
+        <br>
+
+		<div class="row mb-5 font-open-sans">
+			<div class="col-md-4 d-flex">
+				<div class="card">
+
+                    <div class="embed-responsive embed-responsive-16by9">
+					<img src="{% static 'pictures/undraw_building_blocks_n0nc.svg' %}" class="card-img-top embed-responsive-item" alt="...">
+                    </div>
+					<div class="card-body flex-fill d-flex flex-column ">
+						<h5 class="card-title">Create Test </h5>
+                        <p class="card-text"><p> Contribute by creating a new test, which will be visible to all students, and could be assigned to any student afterwards!</p>
+						<a href="{% url 'MCQAssignmentsApp:create_test' %}" class="btn btn-sm btn-primary mt-auto">Start Creating Tests </a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 d-flex">
+				<div class="card">
+                    <div class="embed-responsive embed-responsive-16by9">
+
+					<img src="{% static 'pictures/undraw_goals_w8tw.svg' %}" class="card-img-top embed-responsive-item" alt="...">
+                    </div>
+					<div class="card-body flex-fill d-flex flex-column">
+						<h5 class="card-title">Assign Tests</h5>
+						<p class="card-text"> Assign already created tests to any student!</p>
+						<a href="{% url 'MCQAssignmentsApp:assign_users_tests'  %}" class="btn btn-sm btn-primary mt-auto" >Assign Tests</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 d-flex">
+				<div class="card">
+                   <div class="embed-responsive embed-responsive-16by9">
+					<img src="{% static 'pictures/undraw_insert_block_efyb.svg' %}" class="card-img-top embed-responsive-item" alt="...">
+                   </div>
+					<div class="card-body flex-fill d-flex flex-column">
+						<h5 class="card-title">Edit Tests</h5>
+                        <p class="card-text">  Edit any previously created tests, by adding or deleting questions! </p>
+						<a href="{% url 'MCQAssignmentsApp:edit_tests' %}" class="btn btn-sm btn-primary mt-auto"> Start editing tests</a>
+
+
+					</div>
+				</div>
+			</div>
+            			<div class="col-md-4 d-flex">
+				<div class="card">
+                   <div class="embed-responsive embed-responsive-16by9">
+					<img src="{% static 'pictures/undraw_dashboard_nklg.svg' %}" class="card-img-top embed-responsive-item" alt="...">
+                   </div>
+					<div class="card-body flex-fill d-flex flex-column">
+						<h5 class="card-title"> Dashboard</h5>
+                        <p class="card-text"> Track your students' progress by taking a look at their average test results, and looking at how they answered on tests</p>
+                        <a href="{% url 'MCQAssignmentsApp:render_teacher_dashboard' %}"  class="btn btn-sm btn-primary mt-auto"> Go to Dashboard</a>
+
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+            </div>
+	</div>
+
+
+{% endblock %}

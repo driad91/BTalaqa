@@ -26,7 +26,8 @@ urlpatterns = [
     re_path('^render_student_dashboard/(?P<user_id>\d+)/$', views.render_student_dashboard, name='render_student_dashboard'),
     re_path('^render_videos/$', views.render_videos, name='render_videos'),
     re_path('like_video/$', views.like_video, name='like_video'),
-    re_path('students_home/$', views.render_students_home, name='students_home')
+    re_path('students_home/$', views.render_students_home, name='students_home'),
+    re_path('teachers_home/$', views.render_teachers_home, name='teachers_home')
 
 ]
 

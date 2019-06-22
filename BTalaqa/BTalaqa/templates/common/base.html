@@ -49,6 +49,9 @@
 
            {% if request.user|has_group:"Teachers" %}
                 <li class="nav-item active">
+                    <a class="nav-link " href={% url 'MCQAssignmentsApp:teachers_home' %}> <i class="fa fa-home"></i><div class="font-open-sans" style="display:inline" > Home</div> <span class="sr-only">(current)</span></a>
+                  </li>
+                <li class="nav-item active">
                     <a class="nav-link " href={% url 'MCQAssignmentsApp:create_test' %}> <i class="fa fa-file"></i><div class="font-open-sans" style="display:inline" > Create Test</div> <span class="sr-only">(current)</span></a>
                   </li>
                   <li class="nav-item active">
