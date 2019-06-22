@@ -12,18 +12,19 @@
     <br>
 
 <div class="row ">
-    <div class="container font-open-sans col-10" >
+    <div class="container  col-10" >
         <h3><b>{{test.name}}</b></h3>
-        <div id="test_form" test_id={{ test.id }} action="#" method="post">
+        <div id="test_form" class="font-open-sans" test_id={{ test.id }} action="#" method="post">
         {% csrf_token %}
         {% for question in questions %}
 
             <hr>
 
+        <div>
 
-                    <div class="font-open-sans" >
-                        <p><b>{{ forloop.counter }}. {{ question.text }}</b> </p>
-                    </div>
+                        <p><b> <span class="font-open-sans">{{ forloop.counter }} . {{ question.text }}   </span></b> </p>
+
+            </div>
 
                         {% for answer in answers %}
 

@@ -5,14 +5,8 @@
         {% load static %}
       <link rel="shortcut icon" type="image/png" href="{% static 'favicon/favicon.ico' %}"/>
     <link href="https://fonts.googleapis.com/css?family=Aref+Ruqaa:400,700|Rakkas&display=swap&subset=arabic" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <style>
-
-        html, body {
-  overflow-x: hidden;
-}
-    </style>
 
   <title>
 
@@ -51,9 +45,7 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-            <a class="nav-link " href={% url 'home' %}> <i class="fa fa-home"></i> Home<span class="sr-only">(current)</span></a>
-          </li>
+
 
            {% if request.user|has_group:"Teachers" %}
                 <li class="nav-item active">
@@ -70,6 +62,10 @@
                   </li>
 
         {% else %}
+            <li class="nav-item active">
+                  <a class="nav-link " href={% url 'MCQAssignmentsApp:students_home' %}> <i class="fa fa-home"></i> <div class="font-open-sans" style="display:inline" > Home </div><span class="sr-only">(current)</span></a>
+
+              </li>
               <li class="nav-item active">
                   <a class="nav-link " href={% url 'MCQAssignmentsApp:students_assignments' %}> <i class="fa fa-file"></i> <div class="font-open-sans" style="display:inline" > My Tests </div><span class="sr-only">(current)</span></a>
 
@@ -85,6 +81,10 @@
               </li>
 
         {% endif %}
+
+              <li class="nav-item active">
+            <a class="nav-link " href={% url 'about' %}> <i class="fa fa-info-circle"></i> About<span class="sr-only">(current)</span></a>
+          </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 
 @login_required
-def home(request):
+def about(request):
     """
     home view of the project
 
@@ -15,4 +15,4 @@ def home(request):
     """
     # TODO shall this code be moved to one of the apps?
 
-    return render(request, 'common/home.html', context={})
+    return render(request, 'common/about.html', context={})

@@ -12,3 +12,8 @@ font-family: 'Rakkas', cursive;
 font-family: 'Open Sans', sans-serif;
 
 }
+
+       html, body {
+  overflow-x: hidden;
+}
+
