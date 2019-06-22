@@ -7,3 +7,13 @@ font-family: 'Rakkas', cursive;
 .hidden {
     display: none;
 }
+
+.font-open-sans{
+font-family: 'Open Sans', sans-serif;
+
+}
+
+       html, body {
+  overflow-x: hidden;
+}
+

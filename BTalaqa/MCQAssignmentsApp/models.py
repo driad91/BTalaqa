@@ -17,7 +17,8 @@ class Test(models.Model):
     )
 
     name = models.CharField(max_length=255, blank=False)
-    assignment = models.ManyToManyField('auth.User', through='TestUserAssignment', related_name='assignment')
+    assignment = models.ManyToManyField('auth.User', through='TestUserAssignment',
+                                        related_name='assignment')
     tag = models.CharField(max_length=255, blank=False)
     tag_color = models.CharField(max_length=255, choices=TAGS_COLORS)
 

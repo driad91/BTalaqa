@@ -9,35 +9,48 @@
 <link rel="stylesheet" href="{% static 'css/custom/test-view.css' %}">
 
 <link rel="stylesheet" href="{% static 'css/custom/radio-buttons.css' %}">
+    <br>
 
-<div class="row">
-    <div class="col-10 offset-1">
-        <h3>User: {{student.username}}</h3>
-        <h3>Test: {{test.name}}</h3>
-        <div id="test_form" test_id={{ test.id }} action="#" method="post">
+<div class="row ">
+    <div class="container  col-10" >
+        <h3><b>{{test.name}}</b></h3>
+        <div id="test_form" class="font-open-sans" test_id={{ test.id }} action="#" method="post">
         {% csrf_token %}
         {% for question in questions %}
-            <div class="row">
-                <div class="col-10 offset-1">
-                    <div>
-                        <b> {{ forloop.counter }}. {{ question.text }} </b>
-                        {% for answer in answers %}
-                            {% if answer.question_id == question.id %}
-                                <div >
-                            <input id={{ answer.id }} style="display:inline-block" type="radio" class="option-input radio" question_id={{ question.id }} value=  {{ answer.id }}  name={{ question.id}}>
 
-                                    <label style="display:inline"for= {{ answer.id }} >
+            <hr>
+
+        <div>
+
+                        <p><b> <span class="font-open-sans">{{ forloop.counter }} . {{ question.text }}   </span></b> </p>
+
+            </div>
+
+                        {% for answer in answers %}
+
+                            {% if answer.question_id == question.id %}
+                                <div class="font-open-sans">
+                                    <span>
+
+                                    <label style="display:inline-block" class="font-open-sans" for= {{ answer.id }} >
+                                        <input id={{ answer.id }} style="display:inline-block" type="radio" class="option-input radio" question_id={{ question.id }} value=  {{ answer.id }}  name={{ question.id}}>
+
                                          {{ answer.text }}
-                                        <br>
+
+
                                     </label>
+                                        </span>
+
                                     <div style="display:inline-block"id="correction_div_{{ question.id }}_{{ answer.id }}" class="correction"></div>
+                                        <br>
+                                        <br>
+
                                 </div>
                             {% endif %}
                         {% endfor %}
-                    </div>
-                </div>
-             </div>
+
         {% endfor %}
+            <br>
 
             <div class="row">
                 <div class="col-10 offset-1" align="center">
@@ -50,7 +63,7 @@
             </div>
 
              <div class="row">
-                <div id="video_msg" class="ghost col-10 offset-1" align="center">
+                <div id="video_msg" class="ghost col-10 offset-1 font-open-sans" align="center">
                     <b>Congratulations! </b>  You've unlocked a new video! Click on <b> "My Unlocked Videos" </b> in the menu above to check it out!
                 </div>
             </div>

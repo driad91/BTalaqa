@@ -18,7 +18,7 @@ $(document).ready(function() {
             if (answerID != null) {
                 questionAnswersDict[questionIDs[counter]] = answerID;
             } else {
-                alert("Please make sure you answer all questions before you submit!");
+                swal("Could not submit","Please make sure you answer all questions before you submit!","error");
                 return;
             }
             counter++;
@@ -47,7 +47,7 @@ function execute(data, show_alert=true){
     var corrections = data['corrections_dict'];
     var is_video_added = data['is_video_added'];
     if (show_alert) {
-        alert('You scored ' + percentage + ' on this test');
+        swal('Submitted','You scored ' + percentage + ' on this test','success');
     }
     $("input[type=radio]").attr('disabled', true);
     $('#submit_test').prop("disabled", true);

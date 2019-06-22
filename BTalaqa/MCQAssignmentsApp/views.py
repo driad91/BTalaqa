@@ -6,10 +6,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.http import JsonResponse
 from django.forms import formset_factory
-from MCQAssignmentsApp.helpers import test_helper
+from MCQAssignmentsApp.helpers import test_helper,aggregator
 import json
 import random
 from django.contrib.auth.models import User, Group
+
+
 
 @login_required
 @permission_required('MCQAssignmentsApp.edit_test')
@@ -436,6 +438,8 @@ def render_videos(request):
 
     return render(request, 'students/videos.html',
                   context={'unlocked_videos': unlocked_videos})
+
+@login_required
 def like_video(request):
     """
     user likes specific video and saving it in DB
@@ -454,6 +458,30 @@ def like_video(request):
             user_unlocked_video.save()
     return JsonResponse({'success': True})
 
+@login_required
+def render_students_home(request):
+    """
 
+    :param request:
+    :return:
+    """
+    student = request.user
+    completed_assigned, incomplete_assigned = \
+        aggregator.get_count_assigned_tests(student)
+    count_unlocked_videos = aggregator.get_count_unlocked_videos(student)
+    return render(request, 'students/students-home.html', context=
+    {'count_completed_assigned': completed_assigned,
+     'count_incomplete_assigned': incomplete_assigned,
+     'count_unlocked_videos': count_unlocked_videos})
+
+@login_required
+def render_teachers_home(request):
+    """
+
+    :param request:
+    :return:
+    """
+
+    return render(request, 'teachers/teachers-home.html')
 
 

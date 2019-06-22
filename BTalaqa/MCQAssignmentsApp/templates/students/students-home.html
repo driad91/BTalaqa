@@ -1,0 +1,65 @@
+{% extends 'common/base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/custom/students-home.css' %}">
+
+
+{% block content %}
+
+
+<div class="container">
+        <br>
+
+		<div class="row mb-5 font-open-sans">
+			<div class="col-md-4 d-flex">
+				<div class="card">
+
+                    <div class="embed-responsive embed-responsive-16by9">
+					<img src="{% static 'pictures/undraw_studying_s3l7.svg' %}" class="card-img-top embed-responsive-item" alt="...">
+                    </div>
+					<div class="card-body flex-fill d-flex flex-column ">
+						<h5 class="card-title">My Tests </h5>
+                        <p class="card-text"><b>You have completed {{ count_completed_assigned }} assigned tests.</b> <br>
+                            <b>You have {{ count_incomplete_assigned }} assigned, not completed.</b> </p>
+						<a href="{% url 'MCQAssignmentsApp:students_assignments' %}" class="btn btn-sm btn-primary mt-auto">Go To My Tests </a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 d-flex">
+				<div class="card">
+                    <div class="embed-responsive embed-responsive-16by9">
+
+					<img src="{% static 'pictures/undraw_segment_analysis_bdn4.svg' %}" class="card-img-top embed-responsive-item" alt="...">
+                    </div>
+					<div class="card-body flex-fill d-flex flex-column">
+						<h5 class="card-title">My Dashboard</h5>
+						<p class="card-text"> Track the score and your answers of all previous tests</p>
+						<a href="{% url 'MCQAssignmentsApp:render_student_dashboard' user_id=request.user.id %}" class="btn btn-sm btn-primary mt-auto" >Go To My Dashboard</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 d-flex">
+				<div class="card">
+                   <div class="embed-responsive embed-responsive-16by9">
+					<img src="{% static 'pictures/undraw_winners_ao2o.svg' %}" class="card-img-top embed-responsive-item" alt="...">
+                   </div>
+					<div class="card-body flex-fill d-flex flex-column">
+						<h5 class="card-title">My Unlocked Videos</h5>
+                        <p class="card-text"> <b> You have {{ count_unlocked_videos }} unlocked video(s).</b><br>
+                        Everytime you finish a test you unlock a funny video, which helps improve your English! The more
+                        tests you take, the more videos you unlock!</p>
+                        {% if count_unlocked_videos == 0 %}
+						<a href="{% url 'MCQAssignmentsApp:students_assignments' %}" class="btn btn-sm btn-primary"> Solve Tests to Unlock Videos</a>
+                        {% else %}
+                        <a href="{% url 'MCQAssignmentsApp:render_videos' %}"  class="btn btn-sm btn-primary mt-auto"> Go to Unlocked Videos</a>
+                         {% endif %}
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+            </div>
+	</div>
+
+
+{% endblock %}

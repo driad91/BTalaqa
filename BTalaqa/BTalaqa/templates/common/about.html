@@ -1,22 +1,29 @@
 {% extends 'common/base.html' %}
 
 {% block content %}
+ {% load static %}
+    <link rel="stylesheet" href="{% static 'css/custom/home-custom.css' %}">
 
-<div class="row">
-    <div class="col-10 offset-1">
+<div class="exam-background" >
+       <div class="container">
+           <div class="col-md-12">
+<div class="row font-open-sans">
+<br>
         <p>
         BTalaقa is a project developed to help students with learning English.
         In its most basic form currently, it serves as a collaboration platform between teachers and students, allowing teachers to assign assignments to students, and track their progress.
         </p>
-    </div>
-</div>
-<br>
-
-<div class="row">
-    <div class="col-10 offset-1">
-        <p>
+       <p>
         BTalaقa is an arabic word (بطلاقة) that means fluently!
         </p>
     </div>
 </div>
+           </div>
+
+
+
+    </div>
+
+
+
 {% endblock %}
